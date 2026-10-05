@@ -20,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(coneccti
 //DI
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
+builder.Services.AddScoped<ICompraParceladaRepository, CompraParceladaRepository>();
 
 var app = builder.Build();
 

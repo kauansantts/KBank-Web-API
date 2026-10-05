@@ -14,5 +14,6 @@ public class Transacao
     public string? Descricao { get; set; }
     public double ValorTransacao { get; set; }
     public int UsuarioId { get; set; }
-    public Usuario usuario { get; set; }
+    [JsonIgnore]
+    public Usuario? usuario { get; set; }
 }

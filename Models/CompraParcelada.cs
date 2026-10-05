@@ -19,6 +19,8 @@ public class CompraParcelada
     public int QuantidadeParcelada { get; set; }
     [JsonIgnore]
     public ICollection<Parcela> Parcelas { get; set; }
+   
     public int TransacaoId { get; set; }
-    public Transacao transacao { get; set; }
+    [JsonIgnore]
+    public Transacao? transacao { get; set; }
 }

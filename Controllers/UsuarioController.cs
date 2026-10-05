@@ -17,7 +17,7 @@ public class UsuarioController : ControllerBase
         _usuarioRepository = usuarioRepository;
     }
 
-    [HttpGet("Usuario/saldo")]
+    [HttpGet("saldo")]
     public async Task<ActionResult<Double>> Get(int id)
     {
         var usersaldo = await _usuarioRepository.GetSaldo(id);
