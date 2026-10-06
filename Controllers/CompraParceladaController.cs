@@ -34,18 +34,21 @@ namespace KBank_Web_API.Controllers
         }
 
         [HttpGet("/Compras parceladas")]
-        public async Task<IEnumerable<CompraParcelada>> GetCompras()
+        public async Task<IEnumerable<CompraParceladaResponseDTO>> GetCompras()
         {
-            return await _compra.GetComprasAsync();
+            var compras = await _compra.GetComprasAsync();
+            var comprasDTO = _mapper.Map<IEnumerable<CompraParceladaResponseDTO>>(compras);
+            return comprasDTO;
         }
         
         [HttpPost]
-        public async  Task<ActionResult<CompraParcelada>> Created([FromBody]CompraParcelada compraParcelada)
+        public async  Task<ActionResult<CompraParceladaResponseDTO>> Created([FromBody]CompraParcelada compraParcelada)
         {
             try
             {
                 var compraP = await _compra.CreatedAsync(compraParcelada);
-                return StatusCode(201, compraP);
+                var compraDTO = _mapper.Map<CompraParceladaResponseDTO>(compraP);
+                return StatusCode(201, compraDTO);
             }catch (Exception ex)
             {
                 return BadRequest("Dados invalidos");
@@ -53,11 +56,13 @@ namespace KBank_Web_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<CompraParcelada>> Deleted(int id)
+        public async Task<ActionResult<CompraParceladaResponseDTO>> Deleted(int id)
         {
             try
             {
-                return Ok(await _compra.DeletedAsync(id));
+                var compraDeletada = await _compra.DeletedAsync(id);
+                var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
+                return Ok(compraDeletadaDTO);
             }catch (Exception ex)
             {
                 return BadRequest("ID invalido");

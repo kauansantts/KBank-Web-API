@@ -21,7 +21,7 @@ namespace KBank_Web_API.Repositories
         public async Task<IEnumerable<CompraParcelada>> GetComprasAsync()
         {
             var compras = await _context.ComprasParceladas.ToListAsync();
-            return compras;
+            return compras; 
         }
 
         public async Task<CompraParcelada> CreatedAsync(CompraParcelada compraParcelada)

@@ -4,6 +4,6 @@
     {
         public int CompraParceladaId { get; set; }
         public string NomeProduto { get; set; }
-        public DateTime DataCompra { get; set; } = DateTime.Now;
+        public string DataCompra { get; set; } 
     }
 }
