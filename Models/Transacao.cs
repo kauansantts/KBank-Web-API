@@ -16,4 +16,7 @@ public class Transacao
     public int UsuarioId { get; set; }
     [JsonIgnore]
     public Usuario? usuario { get; set; }
+    [JsonIgnore]
+    public Parcela parcela { get; set; }
+    public int ParcelaId { get; set; }
 }

@@ -4,6 +4,7 @@ using KBank_Web_API.Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261006132111_SegundaMigrations")]
+    partial class SegundaMigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,17 +33,21 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CompraParceladaId"));
 
-                    b.Property<DateTimeOffset>("DataCompra")
+                    b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("NomeProduto")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("QuantidadeParcelada")
                         .HasColumnType("int");
 
+                    b.Property<int>("TransacaoId")
+                        .HasColumnType("int");
+
                     b.HasKey("CompraParceladaId");
+
+                    b.HasIndex("TransacaoId");
 
                     b.ToTable("ComprasParceladas");
                 });
@@ -136,6 +143,17 @@ namespace KBank_Web_API.Migrations
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("KBank_Web_API.Models.CompraParcelada", b =>
+                {
+                    b.HasOne("KBank_Web_API.Models.Transacao", "transacao")
+                        .WithMany()
+                        .HasForeignKey("TransacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("transacao");
                 });
 
             modelBuilder.Entity("KBank_Web_API.Models.Parcela", b =>

@@ -1,3 +1,4 @@
+using KBank_Web_API.DTOs;
 using KBank_Web_API.Infra;
 using KBank_Web_API.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ builder.Services.AddSwaggerGen();
 
 var conecctionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(conecctionString, ServerVersion.AutoDetect(conecctionString)));
+builder.Services.AddAutoMapper(typeof(MapeamentoDTOProfile));
 
 
 //DI

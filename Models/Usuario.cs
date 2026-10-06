@@ -22,7 +22,8 @@ public class Usuario
     [Required(ErrorMessage = "Senha é obrigatorio")]
     [MinLength(6, ErrorMessage ="Minimo de 6 caracteres")]
     [StringLength(15, ErrorMessage ="Maximo de 15 caracteres")]
-    public string? Senha { get; set; }
+    public string Senha { get; set; }
+    [Required(ErrorMessage = "Saldo é obrigatorio, mas pode ser 0")]
     public double SaldoAtual { get; set; }
     [JsonIgnore]
     public ICollection<Transacao> Transacoes { get; set; }

@@ -17,11 +17,7 @@ namespace KBank_Web_API.Repositories
         {
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.UsuarioId == id);
 
-            //if (usuario is null)
-            //{
-            //    throw new Ex
-            //}
-
+            //em manutenção ainda 06/10/26
             return usuario.SaldoAtual;
         }
     }

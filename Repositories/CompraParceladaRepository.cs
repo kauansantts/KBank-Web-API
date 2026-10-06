@@ -13,19 +13,30 @@ namespace KBank_Web_API.Repositories
             _context = context;
         }
 
-        public  CompraParcelada Created(CompraParcelada compraParcelada)
+        public async Task<CompraParcelada> GetCompraAsync(int id)
+        {
+            return await _context.ComprasParceladas.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<CompraParcelada>> GetComprasAsync()
+        {
+            var compras = await _context.ComprasParceladas.ToListAsync();
+            return compras;
+        }
+
+        public async Task<CompraParcelada> CreatedAsync(CompraParcelada compraParcelada)
         {
             if(compraParcelada is null)
             {
                 throw new ArgumentNullException(nameof(compraParcelada));
             }
-            
+
             _context.ComprasParceladas.Add(compraParcelada);
-             _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return compraParcelada;
         }
 
-        public async Task<CompraParcelada> Deleted(int id)
+        public async Task<CompraParcelada> DeletedAsync(int id)
         {
             var compra = await _context.ComprasParceladas.FirstOrDefaultAsync(c => c.CompraParceladaId == id);
             if (compra is null)
@@ -39,5 +50,6 @@ namespace KBank_Web_API.Repositories
 
             return compra;
         }
+
     }
 }

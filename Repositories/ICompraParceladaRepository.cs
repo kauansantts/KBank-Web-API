@@ -4,7 +4,9 @@ namespace KBank_Web_API.Repositories
 {
     public interface ICompraParceladaRepository
     {
-        CompraParcelada Created( CompraParcelada compraParcelada );
-        Task<CompraParcelada> Deleted(int id);
+        Task<CompraParcelada> GetCompraAsync(int id);
+        Task<IEnumerable<CompraParcelada>> GetComprasAsync();
+        Task<CompraParcelada> CreatedAsync( CompraParcelada compraParcelada );
+        Task<CompraParcelada> DeletedAsync(int id);
     }
 }
