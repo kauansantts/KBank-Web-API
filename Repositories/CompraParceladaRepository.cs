@@ -31,6 +31,7 @@ namespace KBank_Web_API.Repositories
                 throw new ArgumentNullException(nameof(compraParcelada));
             }
 
+            compraParcelada.GerarParcelas();
             _context.ComprasParceladas.Add(compraParcelada);
             await _context.SaveChangesAsync();
             return compraParcelada;

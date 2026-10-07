@@ -16,7 +16,5 @@ public class Transacao
     public int UsuarioId { get; set; }
     [JsonIgnore]
     public Usuario? usuario { get; set; }
-    [JsonIgnore]
-    public Parcela parcela { get; set; }
-    public int ParcelaId { get; set; }
+    //fazer relacionamento com compra parcelada, antes tava com a parcela, mas nao faz sentido pela modelagem
 }

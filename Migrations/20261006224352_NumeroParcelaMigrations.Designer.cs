@@ -4,6 +4,7 @@ using KBank_Web_API.Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261006224352_NumeroParcelaMigrations")]
+    partial class NumeroParcelaMigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,13 +40,8 @@ namespace KBank_Web_API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("QuantidadeParcelada")
-                        .IsRequired()
+                    b.Property<int>("QuantidadeParcelada")
                         .HasColumnType("int");
-
-                    b.Property<double?>("ValorParcela")
-                        .IsRequired()
-                        .HasColumnType("double");
 
                     b.HasKey("CompraParceladaId");
 
@@ -67,7 +65,7 @@ namespace KBank_Web_API.Migrations
                     b.Property<int>("NumeroParcela")
                         .HasColumnType("int");
 
-                    b.Property<double?>("ValorParcela")
+                    b.Property<double>("ValorParcela")
                         .HasColumnType("double");
 
                     b.HasKey("ParcelaId");
@@ -94,6 +92,9 @@ namespace KBank_Web_API.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("ParcelaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TipoTransacao")
                         .HasColumnType("int");
 
@@ -104,6 +105,8 @@ namespace KBank_Web_API.Migrations
                         .HasColumnType("double");
 
                     b.HasKey("TransacaoId");
+
+                    b.HasIndex("ParcelaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -154,11 +157,19 @@ namespace KBank_Web_API.Migrations
 
             modelBuilder.Entity("KBank_Web_API.Models.Transacao", b =>
                 {
+                    b.HasOne("KBank_Web_API.Models.Parcela", "parcela")
+                        .WithMany()
+                        .HasForeignKey("ParcelaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("KBank_Web_API.Models.Usuario", "usuario")
                         .WithMany("Transacoes")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("parcela");
 
                     b.Navigation("usuario");
                 });

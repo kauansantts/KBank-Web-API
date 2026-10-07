@@ -2,7 +2,7 @@
 
 namespace KBank_Web_API.Validations
 {
-    public class QuantidadeParcelaValidations : ValidationAttribute
+    public class ValorParcelaValidations : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -11,10 +11,10 @@ namespace KBank_Web_API.Validations
                 return ValidationResult.Success;
             }
 
-            int valor = (int)value;
+            double valor = (double)value;
             if (valor < 0)
             {
-                return new ValidationResult("Existe quantidade de parcelas negativas meu querido?");
+                return new ValidationResult("Existe parcelas negativas meu querido?");
             }
 
             return ValidationResult.Success;

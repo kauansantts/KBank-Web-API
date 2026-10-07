@@ -7,10 +7,11 @@ public class Parcela
 {
     [Key]
     public int ParcelaId { get; set; }
-    [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
-    public double ValorParcela { get; set; }
+    public int NumeroParcela { get; set; } 
+    public double? ValorParcela { get; set; }
     public DateTime DataParcela { get; set; }
     public int CompraParceladaId { get; set; }
     [JsonIgnore]
     public CompraParcelada compraParcelada { get; set; }
+
 }

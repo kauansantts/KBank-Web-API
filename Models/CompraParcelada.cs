@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Validations;
 
 namespace KBank_Web_API.Models;
@@ -16,10 +17,28 @@ public class CompraParcelada
     public int CompraParceladaId { get; set; }
     [Required(ErrorMessage ="Nome do produto é obrigatorio!")]
     public string NomeProduto { get; set; }
-    public DateTime DataCompra { get; set; } = DateTime.Now;    
-    [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
+    [ValorParcelaValidations]
+    [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
+    public double? ValorParcela { get; set; }
+    public DateTime DataCompra { get; set; } = DateTime.Now;
     [QuantidadeParcelaValidations]
-    public int QuantidadeParcelada { get; set; }
+    [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
+    public int? QuantidadeParcelada { get; set; }
+
     [JsonIgnore]
     public ICollection<Parcela> Parcelas { get; set; }
+
+    public void GerarParcelas()
+    {
+        for (int i = 0; i < QuantidadeParcelada; i++)
+        {
+            Parcelas.Add(new Parcela
+            {
+                CompraParceladaId = CompraParceladaId,
+                ValorParcela = ValorParcela,
+                DataParcela = DateTime.Now.AddMonths(i),
+                NumeroParcela = i+1
+            });
+        }
+    }
 }
