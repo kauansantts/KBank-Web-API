@@ -13,6 +13,6 @@ namespace KBank_Web_API.DTOs
         public string DataParcela { get; set; }
         public int CompraParceladaId { get; set; }
         public TipoEnum TipoParcela { get; set; }
-        public CategoriaEnum CategoriaCompra { get; set; }
+        public CategoriaEnum CategoriaParcela { get; set; }
     }
 }

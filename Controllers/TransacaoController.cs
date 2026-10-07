@@ -55,7 +55,7 @@ namespace KBank_Web_API.Controllers
             }
             catch
             {
-                return BadRequest("Algo falhou!");
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
             }
             
         }

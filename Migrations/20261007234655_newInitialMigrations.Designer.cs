@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261006143554_FixModelsMigrations")]
-    partial class FixModelsMigrations
+    [Migration("20261007234655_newInitialMigrations")]
+    partial class newInitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,10 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CompraParceladaId"));
 
+                    b.Property<string>("CategoriaParcela")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime(6)");
 
@@ -40,8 +44,17 @@ namespace KBank_Web_API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("QuantidadeParcelada")
+                    b.Property<int?>("QuantidadeParcelada")
+                        .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<string>("TipoCompra")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<double?>("ValorParcela")
+                        .IsRequired()
+                        .HasColumnType("double");
 
                     b.HasKey("CompraParceladaId");
 
@@ -56,13 +69,20 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ParcelaId"));
 
+                    b.Property<string>("CategoriaParcela")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("CompraParceladaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataParcela")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<double>("ValorParcela")
+                    b.Property<int>("NumeroParcela")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("ValorParcela")
                         .HasColumnType("double");
 
                     b.HasKey("ParcelaId");
@@ -80,8 +100,9 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TransacaoId"));
 
-                    b.Property<int>("CategoriaTransacao")
-                        .HasColumnType("int");
+                    b.Property<string>("CategoriaTransacao")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataTransacao")
                         .HasColumnType("datetime(6)");
@@ -89,13 +110,14 @@ namespace KBank_Web_API.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ParcelaId")
+                    b.Property<int?>("ParcelaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TipoTransacao")
-                        .HasColumnType("int");
+                    b.Property<string>("TipoTransacao")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
                     b.Property<double>("ValorTransacao")
@@ -154,19 +176,15 @@ namespace KBank_Web_API.Migrations
 
             modelBuilder.Entity("KBank_Web_API.Models.Transacao", b =>
                 {
-                    b.HasOne("KBank_Web_API.Models.Parcela", "parcela")
+                    b.HasOne("KBank_Web_API.Models.Parcela", "Parcela")
                         .WithMany()
-                        .HasForeignKey("ParcelaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParcelaId");
 
                     b.HasOne("KBank_Web_API.Models.Usuario", "usuario")
                         .WithMany("Transacoes")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
-                    b.Navigation("parcela");
+                    b.Navigation("Parcela");
 
                     b.Navigation("usuario");
                 });

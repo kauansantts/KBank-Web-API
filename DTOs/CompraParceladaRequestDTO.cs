@@ -6,8 +6,7 @@ namespace KBank_Web_API.DTOs
 {
     public class CompraParceladaRequestDTO
     {
-        [Key]
-        public int CompraParceladaId { get; set; }
+        
         [Required(ErrorMessage = "Nome do produto é obrigatorio!")]
         public string NomeProduto { get; set; }
         [ValorValidations]

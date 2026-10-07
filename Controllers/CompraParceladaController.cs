@@ -51,9 +51,9 @@ namespace KBank_Web_API.Controllers
                 var compraP = await _compra.CreatedAsync(compraParcelada);
                 var compraDTO = _mapper.Map<CompraParceladaResponseDTO>(compraP);
                 return StatusCode(201, compraDTO);
-            }catch (Exception ex)
+            }catch
             {
-                return BadRequest("Dados invalidos");
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
             }
         }
 

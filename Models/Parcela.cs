@@ -12,7 +12,7 @@ public class Parcela
     public double? ValorParcela { get; set; }
     public DateTime DataParcela { get; set; }
     [Required(ErrorMessage = "Categoria da parcela é obrigatorio")]
-    public CategoriaEnum CategoriaCompra { get; set; }
+    public CategoriaEnum CategoriaParcela{ get; set; }
     public int CompraParceladaId { get; set; }
     [JsonIgnore]
     public CompraParcelada compraParcelada { get; set; }

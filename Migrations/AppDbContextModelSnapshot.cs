@@ -30,7 +30,7 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CompraParceladaId"));
 
-                    b.Property<string>("CategoriaCompra")
+                    b.Property<string>("CategoriaParcela")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -66,8 +66,9 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ParcelaId"));
 
-                    b.Property<int>("CategoriaCompra")
-                        .HasColumnType("int");
+                    b.Property<string>("CategoriaParcela")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("CompraParceladaId")
                         .HasColumnType("int");
