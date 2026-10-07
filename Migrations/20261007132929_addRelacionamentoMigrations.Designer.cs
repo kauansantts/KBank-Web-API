@@ -4,6 +4,7 @@ using KBank_Web_API.Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261007132929_addRelacionamentoMigrations")]
+    partial class addRelacionamentoMigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,13 +97,13 @@ namespace KBank_Web_API.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ParcelaId")
+                    b.Property<int>("ParcelaId")
                         .HasColumnType("int");
 
                     b.Property<int>("TipoTransacao")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.Property<double>("ValorTransacao")
@@ -161,11 +164,15 @@ namespace KBank_Web_API.Migrations
                 {
                     b.HasOne("KBank_Web_API.Models.Parcela", "Parcela")
                         .WithMany()
-                        .HasForeignKey("ParcelaId");
+                        .HasForeignKey("ParcelaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("KBank_Web_API.Models.Usuario", "usuario")
                         .WithMany("Transacoes")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Parcela");
 

@@ -2,6 +2,6 @@
 
 public enum TipoEnum
 {
-    Despesas,
+    Despesa,
     Receita,
 }

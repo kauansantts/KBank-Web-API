@@ -17,7 +17,7 @@ public class CompraParcelada
     public int CompraParceladaId { get; set; }
     [Required(ErrorMessage ="Nome do produto é obrigatorio!")]
     public string NomeProduto { get; set; }
-    [ValorParcelaValidations]
+    [ValorValidations]
     [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
     public double? ValorParcela { get; set; }
     public DateTime DataCompra { get; set; } = DateTime.Now;

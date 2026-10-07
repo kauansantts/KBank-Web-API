@@ -13,13 +13,31 @@ public class TransacaoRepository : ITransacaoRepository
         _context = context;
     }
 
-    public async Task<Transacao> GetTransacao(int id)
+    public async Task<Transacao> GetTransacaoAsync(int id)
     {
-        return await _context.Transacoes.FirstOrDefaultAsync(t => t.TransacaoId == id);
+        var transacao = await _context.Transacoes.FirstOrDefaultAsync(t => t.TransacaoId == id);
+        if(transacao is null)
+        {
+            throw new ArgumentNullException();
+        }
+
+        return transacao;
     }
 
-    public async Task<IEnumerable<Transacao>> GetTransacoes()
+    public async Task<IEnumerable<Transacao>> GetTransacoesAsync()
     {
         return await _context.Transacoes.ToListAsync();
+    }
+
+    public async Task<Transacao> CreatedAsync(Transacao transacao)
+    {
+        if (transacao is null)
+        {
+            throw new ArgumentNullException(nameof(transacao));
+        }
+
+        _context.Transacoes.Add(transacao);
+        await _context.SaveChangesAsync();
+        return transacao;
     }
 }

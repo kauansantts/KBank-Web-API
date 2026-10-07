@@ -2,7 +2,7 @@
 
 namespace KBank_Web_API.Validations
 {
-    public class ValorParcelaValidations : ValidationAttribute
+    public class ValorValidations : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -14,7 +14,7 @@ namespace KBank_Web_API.Validations
             double valor = (double)value;
             if (valor < 0)
             {
-                return new ValidationResult("Existe parcelas negativas meu querido?");
+                return new ValidationResult("Existe esse tipo de valor negativo meu querido?");
             }
 
             return ValidationResult.Success;
