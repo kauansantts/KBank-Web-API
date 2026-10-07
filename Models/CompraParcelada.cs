@@ -24,6 +24,9 @@ public class CompraParcelada
     [QuantidadeParcelaValidations]
     [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
     public int? QuantidadeParcelada { get; set; }
+    public TipoEnum TipoCompra { get; set; } = TipoEnum.Despesa;
+    [Required(ErrorMessage = "Categoria da compra é obrigatorio")]
+    public CategoriaEnum CategoriaCompra { get; set; }
 
     [JsonIgnore]
     public ICollection<Parcela> Parcelas { get; set; }
@@ -37,7 +40,8 @@ public class CompraParcelada
                 CompraParceladaId = CompraParceladaId,
                 ValorParcela = ValorParcela,
                 DataParcela = DateTime.Now.AddMonths(i),
-                NumeroParcela = i+1
+                NumeroParcela = i+1,
+                CategoriaCompra = CategoriaCompra
             });
         }
     }

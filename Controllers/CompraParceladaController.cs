@@ -42,8 +42,10 @@ namespace KBank_Web_API.Controllers
         }
         
         [HttpPost]
-        public async  Task<ActionResult<CompraParceladaResponseDTO>> Created([FromBody]CompraParcelada compraParcelada)
+        public async  Task<ActionResult<CompraParceladaResponseDTO>> Created([FromBody]CompraParceladaRequestDTO compraParceladaRequestDto)
         {
+
+            var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaRequestDto);
             try
             {
                 var compraP = await _compra.CreatedAsync(compraParcelada);
