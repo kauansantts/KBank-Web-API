@@ -34,6 +34,10 @@ namespace KBank_Web_API.Infra
             modelBuilder.Entity<Parcela>()
                 .Property(x => x.CategoriaParcela)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<Parcela>()
+                .Property(x => x.TipoParcela)
+                .HasConversion<string>();
         }
     }
 }

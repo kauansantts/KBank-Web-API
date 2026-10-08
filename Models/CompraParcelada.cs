@@ -19,7 +19,7 @@ public class CompraParcelada
     public string NomeProduto { get; set; }
     [ValorValidations]
     [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
-    public double? ValorParcela { get; set; }
+    public double ValorParcela { get; set; }
     public DateTime DataCompra { get; set; } = DateTime.Now;
     [QuantidadeParcelaValidations]
     [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
@@ -39,7 +39,7 @@ public class CompraParcelada
             {
                 CompraParceladaId = CompraParceladaId,
                 ValorParcela = ValorParcela,
-                DataParcela = DateTime.Now.AddMonths(i),
+                DataParcela = DataCompra.AddMonths(i+1),
                 NumeroParcela = i+1,
                 CategoriaParcela = CategoriaParcela
             });

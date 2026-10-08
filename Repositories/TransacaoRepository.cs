@@ -40,4 +40,15 @@ public class TransacaoRepository : ITransacaoRepository
         await _context.SaveChangesAsync();
         return transacao;
     }
+
+    public async Task SaveChangesAsync(Transacao transacao)
+    {
+        if(transacao is null)
+        {
+            throw new ArgumentNullException(nameof(transacao));
+        }
+
+        _context.Add(transacao);
+        await _context.SaveChangesAsync();
+    }
 }

@@ -7,4 +7,6 @@ public interface ITransacaoRepository
     public Task<IEnumerable<Transacao>> GetTransacoesAsync();
     public Task<Transacao> GetTransacaoAsync(int id);
     public Task<Transacao> CreatedAsync(Transacao transacao);
+
+    public Task SaveChangesAsync(Transacao transacao);
 }

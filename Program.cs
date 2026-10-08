@@ -27,6 +27,7 @@ builder.Services.AddAutoMapper(typeof(MapeamentoDTOProfile));
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 builder.Services.AddScoped<ICompraParceladaRepository, CompraParceladaRepository>();
+builder.Services.AddScoped<IParcelaRepository, ParcelaRepository>();
 
 
 var app = builder.Build();

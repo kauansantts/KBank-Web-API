@@ -59,5 +59,14 @@ namespace KBank_Web_API.Controllers
             }
             
         }
+
+        //[HttpPost("/Processar parcelas")]
+        //public async Task<ActionResult<TransacaoResponseDTO>> GerarTransacoesParceladas()
+        //{
+        //    try
+        //    {
+        //        //continuar metodo para chamar o parcelaService!
+        //    }
+        //}
     }
 }
