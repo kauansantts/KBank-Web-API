@@ -7,5 +7,6 @@ namespace KBank_Web_API.Repositories
         public Task<IEnumerable<Parcela>> GetParcelas();
         public Task<Parcela> GetParcela(int id);
         public Task SaveChangesAsync(Parcela parcela);
+        public Task<Parcela> DeletedParcela(Parcela parcela);
     }
 }

@@ -7,6 +7,6 @@ namespace KBank_Web_API.Repositories
         Task<CompraParcelada> GetCompraAsync(int id);
         Task<IEnumerable<CompraParcelada>> GetComprasAsync();
         Task<CompraParcelada> CreatedAsync( CompraParcelada compraParcelada );
-        Task<CompraParcelada> DeletedAsync(int id);
+        Task<CompraParcelada> DeletedAsync(CompraParcelada compraParcelada);
     }
 }

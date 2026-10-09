@@ -37,13 +37,11 @@ namespace KBank_Web_API.Repositories
             return compraParcelada;
         }
 
-        public async Task<CompraParcelada> DeletedAsync(int id)
-        {
-            var compra = await _context.ComprasParceladas.FirstOrDefaultAsync(c => c.CompraParceladaId == id);
+        public async Task<CompraParcelada> DeletedAsync(CompraParcelada compra)
+        { 
             if (compra is null)
             {
                 throw new ArgumentNullException();
-
             }
 
             _context.ComprasParceladas.Remove(compra);

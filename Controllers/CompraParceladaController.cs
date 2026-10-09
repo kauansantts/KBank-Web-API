@@ -2,6 +2,7 @@
 using KBank_Web_API.DTOs;
 using KBank_Web_API.Models;
 using KBank_Web_API.Repositories;
+using KBank_Web_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,13 @@ namespace KBank_Web_API.Controllers
     {
         private readonly ICompraParceladaRepository _compra;
         private readonly IMapper _mapper;
+        private readonly ICompraParceladaService _compraService;
 
-        public CompraParceladaController(ICompraParceladaRepository compra, IMapper mapper)
+        public CompraParceladaController(ICompraParceladaRepository compra, IMapper mapper, ICompraParceladaService compraService)
         {
             _compra = compra;
             _mapper = mapper;
+            _compraService = compraService;
         }
 
         [HttpGet("{id}")]
@@ -26,7 +29,7 @@ namespace KBank_Web_API.Controllers
             var compra = await _compra.GetCompraAsync(id);
             if(compra is null)
             {
-                return NotFound("ID não encontrado");
+                return NotFound("ID invalido");
             }
 
             var CompraDTO = _mapper.Map<CompraParceladaResponseDTO>(compra);
@@ -73,17 +76,17 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<ActionResult<CompraParceladaResponseDTO>> Deleted(int id)
         {
             try
             {
-                var compraDeletada = await _compra.DeletedAsync(id);
+                var compraDeletada = await _compraService.DeletarCompraParcelada(id);
                 var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
                 return Ok(compraDeletadaDTO);
             }catch
             {
-                return BadRequest("ID invalido");
+                return BadRequest("ID invalido/erro inesperado, verifique com o ADM!");
             }
         }
     }

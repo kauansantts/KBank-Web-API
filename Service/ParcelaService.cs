@@ -6,13 +6,11 @@ namespace KBank_Web_API.Service
     public class ParcelaService : IParcelaService
     {
         private readonly IParcelaRepository _parcelaRepo;
-        private readonly ICompraParceladaRepository _compraParceladaRepo;
         private readonly ITransacaoRepository _transacaoRepo;
 
         public ParcelaService(IParcelaRepository parcelaRepo, ICompraParceladaRepository compraParceladaRepo, ITransacaoRepository transacaoRepo)
         {
             _parcelaRepo = parcelaRepo;
-            _compraParceladaRepo = compraParceladaRepo; 
             _transacaoRepo = transacaoRepo;
         }
 

@@ -13,6 +13,8 @@ namespace KBank_Web_API.Repositories
             _context = context;
         }
 
+
+
         public async Task<Parcela> GetParcela(int id)
         {
             var parcela = await _context.Parcelas.FirstOrDefaultAsync(p => p.ParcelaId == id);
@@ -27,6 +29,20 @@ namespace KBank_Web_API.Repositories
         public async Task<IEnumerable<Parcela>> GetParcelas()
         {
             return await _context.Parcelas.ToListAsync();
+        }
+
+        public async Task<Parcela> DeletedParcela(Parcela parcela)
+        {
+            if (parcela is null)
+            {
+                throw new ArgumentNullException();
+
+            }
+
+            _context.Parcelas.Remove(parcela);
+            await _context.SaveChangesAsync();
+
+            return parcela;
         }
 
         public async Task SaveChangesAsync(Parcela parcela)

@@ -23,7 +23,7 @@ namespace KBank_Web_API.Controllers
             _parcelaService = parcelaService;
         }
 
-        [HttpGet]
+        [HttpGet("/Transações")]
         public async Task<ActionResult<IEnumerable<Transacao>>> GetTransacoes()
         {
             var transacoes = await _repository.GetTransacoesAsync();
@@ -71,7 +71,7 @@ namespace KBank_Web_API.Controllers
                 var processamento = await _parcelaService.ProcessarParcelas();
                 if (!processamento.Any())
                 {
-                    return NoContent();
+                    return StatusCode(200, "Você não tem parcelas para processar!");
                 }
 
                 return Ok(processamento);
