@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KBank_Web_API.Migrations
 {
     /// <inheritdoc />
-    public partial class newInitialMigrations : Migration
+    public partial class newFirstMigrationsrs : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,11 +64,14 @@ namespace KBank_Web_API.Migrations
                     ParcelaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NumeroParcela = table.Column<int>(type: "int", nullable: false),
-                    ValorParcela = table.Column<double>(type: "double", nullable: true),
+                    ValorParcela = table.Column<double>(type: "double", nullable: false),
                     DataParcela = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TipoParcela = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     CategoriaParcela = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CompraParceladaId = table.Column<int>(type: "int", nullable: false)
+                    CompraParceladaId = table.Column<int>(type: "int", nullable: false),
+                    Processada = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {

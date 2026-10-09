@@ -2,6 +2,7 @@
 using KBank_Web_API.DTOs;
 using KBank_Web_API.Models;
 using KBank_Web_API.Repositories;
+using KBank_Web_API.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,13 @@ namespace KBank_Web_API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ITransacaoRepository _repository;
+        private readonly IParcelaService _parcelaService;
 
-        public TransacaoController(IMapper mapper, ITransacaoRepository repository)
+        public TransacaoController(IMapper mapper, ITransacaoRepository repository, IParcelaService parcelaService)
         {
             _mapper = mapper;
             _repository = repository;
+            _parcelaService = parcelaService;
         }
 
         [HttpGet]
@@ -60,13 +63,23 @@ namespace KBank_Web_API.Controllers
             
         }
 
-        //[HttpPost("/Processar parcelas")]
-        //public async Task<ActionResult<TransacaoResponseDTO>> GerarTransacoesParceladas()
-        //{
-        //    try
-        //    {
-        //        //continuar metodo para chamar o parcelaService!
-        //    }
-        //}
+        [HttpPost("/Processar parcelas")]
+        public async Task<ActionResult<IEnumerable<Parcela>>> GerarTransacoesParceladas()
+        {
+            try
+            {
+                var processamento = await _parcelaService.ProcessarParcelas();
+                if (!processamento.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(processamento);
+            }
+            catch
+            {
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+            }
+        }
     }
 }

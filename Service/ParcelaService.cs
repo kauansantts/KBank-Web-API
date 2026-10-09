@@ -3,7 +3,7 @@ using KBank_Web_API.Repositories;
 
 namespace KBank_Web_API.Service
 {
-    public class ParcelaService
+    public class ParcelaService : IParcelaService
     {
         private readonly IParcelaRepository _parcelaRepo;
         private readonly ICompraParceladaRepository _compraParceladaRepo;
@@ -12,14 +12,15 @@ namespace KBank_Web_API.Service
         public ParcelaService(IParcelaRepository parcelaRepo, ICompraParceladaRepository compraParceladaRepo, ITransacaoRepository transacaoRepo)
         {
             _parcelaRepo = parcelaRepo;
-            _compraParceladaRepo = compraParceladaRepo;
+            _compraParceladaRepo = compraParceladaRepo; 
             _transacaoRepo = transacaoRepo;
         }
 
-        public async Task ProcessarParcelas()
+        public async Task<IEnumerable<Parcela>> ProcessarParcelas()
         {
             var dataAtual = DateTime.Now;
             var parcelas = await _parcelaRepo.GetParcelas();
+            List<Parcela> ListParcelasProcessadas = new List<Parcela>();
 
             foreach ( var parcela in parcelas)
             {
@@ -37,8 +38,11 @@ namespace KBank_Web_API.Service
                     await _transacaoRepo.SaveChangesAsync(transacao);
                     parcela.Processada = true;
                     await _parcelaRepo.SaveChangesAsync(parcela);
+                    ListParcelasProcessadas.Add(parcela);
                 }
             }
+
+            return ListParcelasProcessadas;
         }
     }
 }

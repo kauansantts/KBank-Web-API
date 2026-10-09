@@ -1,6 +1,7 @@
 using KBank_Web_API.DTOs;
 using KBank_Web_API.Infra;
 using KBank_Web_API.Repositories;
+using KBank_Web_API.Service;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 builder.Services.AddScoped<ICompraParceladaRepository, CompraParceladaRepository>();
 builder.Services.AddScoped<IParcelaRepository, ParcelaRepository>();
+builder.Services.AddScoped<IParcelaService, ParcelaService>();
 
 
 var app = builder.Build();

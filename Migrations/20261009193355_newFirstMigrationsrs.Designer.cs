@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261008214324_ProcessadaModelsAddMigrations")]
-    partial class ProcessadaModelsAddMigrations
+    [Migration("20261009193355_newFirstMigrationsrs")]
+    partial class newFirstMigrationsrs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,8 +52,7 @@ namespace KBank_Web_API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<double?>("ValorParcela")
-                        .IsRequired()
+                    b.Property<double>("ValorParcela")
                         .HasColumnType("double");
 
                     b.HasKey("CompraParceladaId");
@@ -85,7 +84,11 @@ namespace KBank_Web_API.Migrations
                     b.Property<bool>("Processada")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<double?>("ValorParcela")
+                    b.Property<string>("TipoParcela")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<double>("ValorParcela")
                         .HasColumnType("double");
 
                     b.HasKey("ParcelaId");

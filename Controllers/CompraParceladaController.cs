@@ -56,6 +56,22 @@ namespace KBank_Web_API.Controllers
                 return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
             }
         }
+        [HttpPost("/Add Compra Parcelada data antiga teste")]
+        public async Task<ActionResult<CompraParceladaResponseDTO>> Created2([FromBody] CompraParcelaProvisorioDTO compraParceladaDto)
+        {
+            var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaDto);
+
+            try
+            {
+                var compraP = await _compra.CreatedAsync(compraParcelada);
+                var compraDTO = _mapper.Map<CompraParceladaResponseDTO>(compraP);
+                return StatusCode(201, compraDTO);
+            }
+            catch
+            {
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+            }
+        }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<CompraParceladaResponseDTO>> Deleted(int id)
@@ -65,7 +81,7 @@ namespace KBank_Web_API.Controllers
                 var compraDeletada = await _compra.DeletedAsync(id);
                 var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
                 return Ok(compraDeletadaDTO);
-            }catch (Exception ex)
+            }catch
             {
                 return BadRequest("ID invalido");
             }
