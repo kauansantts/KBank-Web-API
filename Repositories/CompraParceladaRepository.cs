@@ -15,12 +15,17 @@ namespace KBank_Web_API.Repositories
 
         public async Task<CompraParcelada> GetCompraAsync(int id)
         {
-            return await _context.ComprasParceladas.FindAsync(id);
+            var compra =  await _context.ComprasParceladas.Include(p => p.Parcelas).FirstOrDefaultAsync(c => c.CompraParceladaId == id);
+            if(compra is null)
+            {
+                throw new ArgumentNullException();
+            }
+            return compra;
         }
 
         public async Task<IEnumerable<CompraParcelada>> GetComprasAsync()
         {
-            var compras = await _context.ComprasParceladas.ToListAsync();
+            var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).ToListAsync();   
             return compras; 
         }
 
@@ -49,6 +54,5 @@ namespace KBank_Web_API.Repositories
 
             return compra;
         }
-
     }
 }

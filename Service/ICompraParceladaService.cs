@@ -4,6 +4,6 @@ namespace KBank_Web_API.Service
 {
     public interface ICompraParceladaService
     {
-        Task<CompraParcelada> DeletarCompraParcelada(int id);
+        public Task<CompraParcelada> DeletarCompraParcelada(int id);
     }
 }

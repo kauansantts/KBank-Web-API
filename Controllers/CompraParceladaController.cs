@@ -26,14 +26,16 @@ namespace KBank_Web_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CompraParceladaResponseDTO>> GetCompra(int id)
         {
-            var compra = await _compra.GetCompraAsync(id);
-            if(compra is null)
+            try
+            {
+                var compra = await _compra.GetCompraAsync(id);
+                var CompraDTO = _mapper.Map<CompraParceladaResponseDTO>(compra);
+                return Ok(CompraDTO);
+            }
+            catch
             {
                 return NotFound("ID invalido");
             }
-
-            var CompraDTO = _mapper.Map<CompraParceladaResponseDTO>(compra);
-            return Ok(CompraDTO);
         }
 
         [HttpGet("/Compras parceladas")]

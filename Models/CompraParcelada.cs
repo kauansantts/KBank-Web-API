@@ -27,8 +27,6 @@ public class CompraParcelada
     public TipoEnum TipoCompra { get; set; } = TipoEnum.Despesa;
     [Required(ErrorMessage = "Categoria da compra é obrigatorio")]
     public CategoriaEnum CategoriaParcela { get; set; }
-
-    [JsonIgnore]
     public ICollection<Parcela> Parcelas { get; set; }
 
     public void GerarParcelas()

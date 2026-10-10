@@ -25,13 +25,13 @@ namespace KBank_Web_API.Service
             }
 
             var parcelas = await _parcelaRepo.GetParcelas();
-            foreach(var parcela in parcelas)
-            {
-                if(parcela.CompraParceladaId == compra.CompraParceladaId && parcela.Processada == false)
+                foreach(var parcela in parcelas)
                 {
-                    await _parcelaRepo.DeletedParcela(parcela);
+                    if(parcela.CompraParceladaId == compra.CompraParceladaId && parcela.Processada == false)
+                    {
+                        await _parcelaRepo.DeletedParcela(parcela);
+                    }
                 }
-            }
 
             await _compraRepo.DeletedAsync(compra);
             return compra;
