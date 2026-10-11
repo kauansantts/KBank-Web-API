@@ -54,5 +54,11 @@ namespace KBank_Web_API.Repositories
 
             return compra;
         }
+
+        public async Task<CompraParcelada> SaveChangesAsync(CompraParcelada compraParcelada)
+        {
+            await _context.SaveChangesAsync();
+            return compraParcelada;
+        }
     }
 }

@@ -83,7 +83,7 @@ namespace KBank_Web_API.Controllers
         {
             try
             {
-                var compraDeletada = await _compraService.DeletarCompraParcelada(id);
+                var compraDeletada = await _compraService.CancelarCompraParcelada(id);
                 var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
                 return Ok(compraDeletadaDTO);
             }catch

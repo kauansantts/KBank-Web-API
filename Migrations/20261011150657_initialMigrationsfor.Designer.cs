@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261009193355_newFirstMigrationsrs")]
-    partial class newFirstMigrationsrs
+    [Migration("20261011150657_initialMigrationsfor")]
+    partial class initialMigrationsfor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace KBank_Web_API.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CompraParceladaId"));
+
+                    b.Property<bool>("Ativa")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("CategoriaParcela")
                         .IsRequired()

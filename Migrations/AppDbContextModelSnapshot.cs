@@ -30,6 +30,9 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CompraParceladaId"));
 
+                    b.Property<bool>("Cancelada")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("CategoriaParcela")
                         .IsRequired()
                         .HasColumnType("longtext");

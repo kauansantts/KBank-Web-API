@@ -8,5 +8,6 @@ namespace KBank_Web_API.Repositories
         Task<IEnumerable<CompraParcelada>> GetComprasAsync();
         Task<CompraParcelada> CreatedAsync( CompraParcelada compraParcelada );
         Task<CompraParcelada> DeletedAsync(CompraParcelada compraParcelada);
+        Task<CompraParcelada> SaveChangesAsync (CompraParcelada compraParcelada );
     }
 }
