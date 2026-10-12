@@ -27,7 +27,8 @@ namespace KBank_Web_API.Service
                     var transacao = new Transacao()
                     {
                         DataTransacao = parcela.DataParcela,
-                        CategoriaTransacao = parcela.CategoriaParcela,
+                        CategoriaTransacao = null,
+                        CategoriaCompra = parcela.CategoriaParcela,
                         Descricao = null,
                         ValorTransacao = parcela.ValorParcela,
                         ParcelaId = parcela.ParcelaId,

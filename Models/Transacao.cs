@@ -13,7 +13,8 @@ namespace KBank_Web_API.Models;
         [Required(ErrorMessage = "Tipo da transacao é obrigatorio")]
         public TipoEnum TipoTransacao { get; set; }
         [Required(ErrorMessage = "Categoria da transacao é obrigatorio")]
-        public CategoriaEnum CategoriaTransacao { get; set; }
+        public CategoriaCompraEnum? CategoriaCompra { get; set; }
+        public CategoriaEnum? CategoriaTransacao { get; set; }
         public string? Descricao { get; set; }
         [ValorTransacaoValidations]  
         [Required(ErrorMessage ="Valor da transacao é obrigatorio")]

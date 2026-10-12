@@ -106,8 +106,11 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TransacaoId"));
 
-                    b.Property<string>("CategoriaTransacao")
+                    b.Property<string>("CategoriaCompra")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CategoriaTransacao")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataTransacao")

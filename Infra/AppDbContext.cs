@@ -23,6 +23,11 @@ namespace KBank_Web_API.Infra
                 .Property(x => x.TipoTransacao)
                 .HasConversion<string>();
 
+            modelBuilder.Entity<Transacao>()
+                .Property(x => x.CategoriaCompra)
+                .HasConversion<string>();
+
+
             modelBuilder.Entity<CompraParcelada>()
                 .Property(x => x.CategoriaParcela)
                 .HasConversion<string>();
@@ -30,6 +35,7 @@ namespace KBank_Web_API.Infra
             modelBuilder.Entity<CompraParcelada>()
                 .Property(x => x.TipoCompra)
                 .HasConversion<string>();
+
 
             modelBuilder.Entity<Parcela>()
                 .Property(x => x.CategoriaParcela)
