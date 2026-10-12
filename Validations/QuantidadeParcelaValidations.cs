@@ -17,6 +17,11 @@ namespace KBank_Web_API.Validations
                 return new ValidationResult("Existe quantidade de parcelas negativas meu querido?");
             }
 
+            if(valor == 0)
+            {
+                return new ValidationResult("Minimo de uma parcela!");
+            }
+
             return ValidationResult.Success;
         }
     }
