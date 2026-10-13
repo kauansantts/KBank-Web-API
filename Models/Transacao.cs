@@ -25,4 +25,5 @@ namespace KBank_Web_API.Models;
         public int? ParcelaId { get; set; }
         [JsonIgnore]
         public Parcela? Parcela { get; set; }
+        public bool Cancelada { get; set; }
 }

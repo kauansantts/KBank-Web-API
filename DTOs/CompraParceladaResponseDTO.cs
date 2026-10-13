@@ -1,5 +1,6 @@
 ﻿using KBank_Web_API.Models;
 using KBank_Web_API.Models.Enums;
+using KBank_Web_API.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace KBank_Web_API.DTOs
@@ -13,6 +14,6 @@ namespace KBank_Web_API.DTOs
         public CategoriaCompraEnum CategoriaParcela { get; set; }
         public TipoEnum TipoCompra { get; set; }
         public bool Cancelada { get; set; }
-        public IEnumerable<ParcelaResponseDTO> Parcelas { get; set; }
+        public IEnumerable<ParcelaCompraResponseDTO> Parcelas { get; set; }
     }
 }

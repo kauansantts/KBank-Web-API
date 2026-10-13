@@ -15,8 +15,7 @@ namespace KBank_Web_API.DTOs
         [QuantidadeParcelaValidations]
         [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
         public int? QuantidadeParcelada { get; set; }
-        [CategoriaCompraValidations]
-        [Required(ErrorMessage = "Categoria da transacao é obrigatorio")]
+        [Required(ErrorMessage = "Categoria da transacao é obrigatorio e so aceita livre e inesperada!")]
         public CategoriaCompraEnum CategoriaParcela { get; set; } 
     }
 }

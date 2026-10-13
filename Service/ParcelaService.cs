@@ -43,5 +43,30 @@ namespace KBank_Web_API.Service
 
             return ListParcelasProcessadas;
         }
+
+        public async Task<Parcela> ProcessarParcelasId(int id)
+        {
+            var parcela = await _parcelaRepo.GetParcela(id);
+            if(parcela is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var transacao = new Transacao()
+            {
+                DataTransacao = parcela.DataParcela,
+                CategoriaTransacao = null,
+                CategoriaCompra = parcela.CategoriaParcela,
+                Descricao = null,
+                ValorTransacao = parcela.ValorParcela,
+                ParcelaId = parcela.ParcelaId,
+                TipoTransacao = parcela.TipoParcela
+            };
+            await _transacaoRepo.SaveChangesAsync(transacao);
+            parcela.Processada = true;
+            await _parcelaRepo.SaveChangesAsync(parcela);
+
+            return parcela;
+        }
     }
 }

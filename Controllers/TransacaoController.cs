@@ -14,35 +14,35 @@ namespace KBank_Web_API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ITransacaoRepository _repository;
-        private readonly IParcelaService _parcelaService;
 
-        public TransacaoController(IMapper mapper, ITransacaoRepository repository, IParcelaService parcelaService)
+        public TransacaoController(IMapper mapper, ITransacaoRepository repository)
         {
             _mapper = mapper;
             _repository = repository;
-            _parcelaService = parcelaService;
-        }
-
-        [HttpGet("/Transações")]
-        public async Task<ActionResult<IEnumerable<Transacao>>> GetTransacoes()
-        {
-            var transacoes = await _repository.GetTransacoesAsync();
-
-            return Ok(transacoes);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transacao>> GetTransacao(int id)
+        public async Task<ActionResult<TransacaoResponseDTO>> GetTransacao(int id)
         {
             try
             {
                 var transacao = await _repository.GetTransacaoAsync(id);
-                return Ok(transacao);
+                var transacaoDto = _mapper.Map<TransacaoResponseDTO>(transacao);
+                return Ok(transacaoDto);
             }
             catch
             {
                 return NotFound("ID invalido!");
             }
+        }
+
+        [HttpGet("/Transações")]
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetTransacoes()
+        {
+            var transacoes = await _repository.GetTransacoesAsync();
+            var transacoesDto = _mapper.Map<TransacaoResponseDTO>(transacoes);
+
+            return Ok(transacoesDto);
         }
 
         [HttpPost]
@@ -63,23 +63,35 @@ namespace KBank_Web_API.Controllers
             
         }
 
-        [HttpPost("/Processar parcelas")]
-        public async Task<ActionResult<IEnumerable<Parcela>>> GerarTransacoesParceladas()
-        {
-            try
-            {
-                var processamento = await _parcelaService.ProcessarParcelas();
-                if (!processamento.Any())
-                {
-                    return StatusCode(200, "Você não tem parcelas para processar!");
-                }
+        //[HttpDelete] CONTINUAR AQUI...RACIOCINIO!!
+        //public async Task<ActionResult<TransacaoResponseDTO>> Deleted(int id)
+        //{
+        //    try
+        //    {
+        //        var transacaoDeletada = await _repository.CancelarCompraParcelada(id);
+        //        var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
+        //        return Ok(compraDeletadaDTO);
+        //    }
+        //    catch
+        //    {
+        //        return BadRequest("ID invalido/erro inesperado, verifique com o ADM!");
+        //    }
+        //}
 
-                return Ok(processamento);
-            }
-            catch
-            {
-                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
-            }
-        }
+
+        //[HttpDelete] SO DEMONSTRAÇÃO PARA FAZER O DE CIMA!
+        //public async Task<ActionResult<CompraParceladaResponseDTO>> Deleted(int id)
+        //{
+        //    try
+        //    {
+        //        var compraDeletada = await _compraService.CancelarCompraParcelada(id);
+        //        var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
+        //        return Ok(compraDeletadaDTO);
+        //    }
+        //    catch
+        //    {
+        //        return BadRequest("ID invalido/erro inesperado, verifique com o ADM!");
+        //    }
+        //}
     }
 }

@@ -25,7 +25,6 @@ public class CompraParcelada
     [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
     public int? QuantidadeParcelada { get; set; }
     public TipoEnum TipoCompra { get; set; } = TipoEnum.Despesa;
-    [CategoriaCompraValidations]
     [Required(ErrorMessage = "Categoria da compra é obrigatorio")]
     public CategoriaCompraEnum CategoriaParcela { get; set; }
     public bool Cancelada { get; set; }

@@ -5,5 +5,6 @@ namespace KBank_Web_API.Service
     public interface IParcelaService
     {
         Task<IEnumerable<Parcela>> ProcessarParcelas();
+        Task<Parcela> ProcessarParcelasId(int id);
     }
 }

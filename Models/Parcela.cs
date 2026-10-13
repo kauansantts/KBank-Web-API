@@ -15,7 +15,6 @@ public class Parcela
     public DateTime DataParcela { get; set; }
     [Required(ErrorMessage = "Tipo da parcela é obrigatorio")]
     public TipoEnum TipoParcela { get; set; } = TipoEnum.Despesa;
-    [CategoriaCompraValidations]
     [Required(ErrorMessage = "Categoria da parcela é obrigatorio")]
     public CategoriaCompraEnum CategoriaParcela { get; set; }
     public int CompraParceladaId { get; set; }

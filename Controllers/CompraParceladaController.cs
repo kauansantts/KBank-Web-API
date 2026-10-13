@@ -38,7 +38,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Compras parceladas")]
+        [HttpGet("/Compras-parceladas")]
         public async Task<IEnumerable<CompraParceladaResponseDTO>> GetCompras()
         {
             var compras = await _compra.GetComprasAsync();
@@ -61,8 +61,8 @@ namespace KBank_Web_API.Controllers
                 return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
             }
         }
-        [HttpPost("/Add Compra Parcelada data antiga teste")]
-        public async Task<ActionResult<CompraParceladaResponseDTO>> Created2([FromBody] CompraParcelaProvisorioDTO compraParceladaDto)
+        [HttpPost("/Data-personalizada")]
+        public async Task<ActionResult<CompraParceladaResponseDTO>> CreatedPersonalizado([FromBody] CompraParcelaProvisorioDTO compraParceladaDto)
         {
             var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaDto);
 

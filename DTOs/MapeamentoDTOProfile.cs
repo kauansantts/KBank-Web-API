@@ -21,6 +21,11 @@ namespace KBank_Web_API.DTOs
                 opt => opt.MapFrom(src => src.DataCompra.ToString("dd/MM/yyyy"))
             ).ReverseMap();
 
+            CreateMap<Parcela, ParcelaCompraResponseDTO>()
+            .ForMember(
+                dest => dest.DataParcela,
+                opt => opt.MapFrom(src => src.DataParcela.ToString("dd/MM/yyyy"))
+            ).ReverseMap();
             CreateMap<Parcela, ParcelaResponseDTO>()
             .ForMember(
                 dest => dest.DataParcela,
