@@ -31,6 +31,7 @@ builder.Services.AddScoped<ICompraParceladaRepository, CompraParceladaRepository
 builder.Services.AddScoped<IParcelaRepository, ParcelaRepository>();
 builder.Services.AddScoped<IParcelaService, ParcelaService>();
 builder.Services.AddScoped<ICompraParceladaService, CompraParceladaService>();
+builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 
 
 var app = builder.Build();

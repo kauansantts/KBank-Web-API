@@ -122,6 +122,10 @@ namespace KBank_Web_API.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Identificador")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("ParcelaId")
                         .HasColumnType("int");
 

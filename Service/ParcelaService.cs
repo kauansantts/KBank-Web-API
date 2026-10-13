@@ -1,4 +1,5 @@
 ﻿using KBank_Web_API.Models;
+using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
 
 namespace KBank_Web_API.Service
@@ -27,8 +28,9 @@ namespace KBank_Web_API.Service
                     var transacao = new Transacao()
                     {
                         DataTransacao = parcela.DataParcela,
+                        Identificador = IdentificadorEnum.CompraParcelada,
                         CategoriaTransacao = null,
-                        CategoriaCompra = parcela.CategoriaParcela,
+                        CategoriaParcela = parcela.CategoriaParcela,
                         Descricao = null,
                         ValorTransacao = parcela.ValorParcela,
                         ParcelaId = parcela.ParcelaId,
@@ -55,8 +57,9 @@ namespace KBank_Web_API.Service
             var transacao = new Transacao()
             {
                 DataTransacao = parcela.DataParcela,
+                Identificador = IdentificadorEnum.CompraParcelada,
                 CategoriaTransacao = null,
-                CategoriaCompra = parcela.CategoriaParcela,
+                CategoriaParcela = parcela.CategoriaParcela,
                 Descricao = null,
                 ValorTransacao = parcela.ValorParcela,
                 ParcelaId = parcela.ParcelaId,

@@ -7,13 +7,11 @@ namespace KBank_Web_API.Service
     {    
         private readonly ICompraParceladaRepository _compraRepo;
         private readonly IParcelaRepository _parcelaRepo;
-        private readonly ITransacaoRepository _transacaoRepo;
 
-        public CompraParceladaService(ICompraParceladaRepository compraRepo, IParcelaRepository parcelaRepo, ITransacaoRepository transacaoRepo)
+        public CompraParceladaService(ICompraParceladaRepository compraRepo, IParcelaRepository parcelaRepo)
         {
             _compraRepo = compraRepo;
             _parcelaRepo = parcelaRepo;
-            _transacaoRepo = transacaoRepo;
         }
 
         public async Task<CompraParcelada> CancelarCompraParcelada(int id)

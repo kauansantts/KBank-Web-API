@@ -10,10 +10,12 @@ namespace KBank_Web_API.Models;
         [Key]
         public int TransacaoId { get; set; }
         public DateTime DataTransacao { get; set; } = DateTime.Now;
+        [Required(ErrorMessage ="Identificador é obrigatorio!")]
+        public IdentificadorEnum Identificador { get; set; } = IdentificadorEnum.Normal;
         [Required(ErrorMessage = "Tipo da transacao é obrigatorio")]
         public TipoEnum TipoTransacao { get; set; }
         [Required(ErrorMessage = "Categoria da transacao é obrigatorio")]
-        public CategoriaCompraEnum? CategoriaCompra { get; set; }
+        public CategoriaCompraEnum? CategoriaParcela { get; set; }//talvez nao precisa ter
         public CategoriaEnum? CategoriaTransacao { get; set; }
         public string? Descricao { get; set; }
         [ValorTransacaoValidations]  

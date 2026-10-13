@@ -24,7 +24,11 @@ namespace KBank_Web_API.Infra
                 .HasConversion<string>();
 
             modelBuilder.Entity<Transacao>()
-                .Property(x => x.CategoriaCompra)
+                .Property(x => x.CategoriaParcela)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Transacao>()
+                .Property(x => x.Identificador)
                 .HasConversion<string>();
 
 

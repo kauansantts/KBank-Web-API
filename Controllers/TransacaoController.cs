@@ -14,11 +14,13 @@ namespace KBank_Web_API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ITransacaoRepository _repository;
+        private readonly ITransacaoService _transacaoService;
 
-        public TransacaoController(IMapper mapper, ITransacaoRepository repository)
+        public TransacaoController(IMapper mapper, ITransacaoRepository repository, ITransacaoService transacaoService)
         {
             _mapper = mapper;
             _repository = repository;
+            _transacaoService = transacaoService;
         }
 
         [HttpGet("{id}")]
@@ -40,7 +42,7 @@ namespace KBank_Web_API.Controllers
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetTransacoes()
         {
             var transacoes = await _repository.GetTransacoesAsync();
-            var transacoesDto = _mapper.Map<TransacaoResponseDTO>(transacoes);
+            var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
 
             return Ok(transacoesDto);
         }
@@ -50,48 +52,32 @@ namespace KBank_Web_API.Controllers
         {
             var transacao = _mapper.Map<Transacao>(transacaoRequestDTO);
             
-            try
-            {
+            //try
+            //{
                 var transacaoCriada = await _repository.CreatedAsync(transacao);
                 var transacaoCriadaResponseDto = _mapper.Map<TransacaoResponseDTO>(transacaoCriada);
                 return StatusCode(201, transacaoCriadaResponseDto);     
-            }
-            catch
-            {
-                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
-            }
+            //}
+            //catch
+            //{
+            //    return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+            //}
             
         }
 
-        //[HttpDelete] CONTINUAR AQUI...RACIOCINIO!!
-        //public async Task<ActionResult<TransacaoResponseDTO>> Deleted(int id)
-        //{
-        //    try
-        //    {
-        //        var transacaoDeletada = await _repository.CancelarCompraParcelada(id);
-        //        var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
-        //        return Ok(compraDeletadaDTO);
-        //    }
-        //    catch
-        //    {
-        //        return BadRequest("ID invalido/erro inesperado, verifique com o ADM!");
-        //    }
-        //}
-
-
-        //[HttpDelete] SO DEMONSTRAÇÃO PARA FAZER O DE CIMA!
-        //public async Task<ActionResult<CompraParceladaResponseDTO>> Deleted(int id)
-        //{
-        //    try
-        //    {
-        //        var compraDeletada = await _compraService.CancelarCompraParcelada(id);
-        //        var compraDeletadaDTO = _mapper.Map<CompraParceladaResponseDTO>(compraDeletada);
-        //        return Ok(compraDeletadaDTO);
-        //    }
-        //    catch
-        //    {
-        //        return BadRequest("ID invalido/erro inesperado, verifique com o ADM!");
-        //    }
-        //}
+        [HttpDelete]
+        public async Task<ActionResult<TransacaoResponseDTO>> CancelarTransacao(int id)
+        {
+            try
+            {
+                var transacaoDeletada = await _transacaoService.CancelarTransacao(id);
+                var transacaoDeletadaDto = _mapper.Map<TransacaoResponseDTO>(transacaoDeletada);
+                return Ok(transacaoDeletadaDto);
+            }
+            catch
+            {
+                return BadRequest("ID invalido/erro inesperado, verifique com o ADM!");
+            }
+        }
     }
 }

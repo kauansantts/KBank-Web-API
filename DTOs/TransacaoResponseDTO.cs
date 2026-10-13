@@ -10,6 +10,7 @@ namespace KBank_Web_API.DTOs
     {
         [Key]
         public int TransacaoId { get; set; }
+        public IdentificadorEnum Identificador { get; set; }
         public string DataTransacao { get; set; }
         [Required(ErrorMessage = "Tipo da transacao é obrigatorio")]
         public TipoEnum TipoTransacao { get; set; }
@@ -22,5 +23,6 @@ namespace KBank_Web_API.DTOs
         public double ValorTransacao { get; set; }
         public int? UsuarioId { get; set; }
         public int? ParcelaId { get; set; }
+        public bool Cancelada { get; set; }
     }
 }
