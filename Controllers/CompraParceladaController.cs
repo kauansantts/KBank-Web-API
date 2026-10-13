@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KBank_Web_API.DTOs;
 using KBank_Web_API.Models;
+using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
 using KBank_Web_API.Service;
 using Microsoft.AspNetCore.Http;
@@ -51,6 +52,16 @@ namespace KBank_Web_API.Controllers
         {
 
             var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaRequestDto);
+
+            try
+            {
+                _compraService.VerificarCategoria(compraParcelada);
+            }
+            catch
+            {
+                return BadRequest("Categoria da transacao é obrigatorio e so aceita livre e inesperada");
+            }
+
             try
             {
                 var compraP = await _compra.CreatedAsync(compraParcelada);
@@ -65,6 +76,15 @@ namespace KBank_Web_API.Controllers
         public async Task<ActionResult<CompraParceladaResponseDTO>> CreatedPersonalizado([FromBody] CompraParcelaProvisorioDTO compraParceladaDto)
         {
             var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaDto);
+
+            try
+            {
+                _compraService.VerificarCategoria(compraParcelada);
+            }
+            catch
+            {
+                return BadRequest("Categoria da transacao é obrigatorio e so aceita livre e inesperada");
+            }
 
             try
             {

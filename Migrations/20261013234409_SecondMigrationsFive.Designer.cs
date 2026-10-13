@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261013190326_IdentificadorModelsMigrationst")]
-    partial class IdentificadorModelsMigrationst
+    [Migration("20261013234409_SecondMigrationsFive")]
+    partial class SecondMigrationsFive
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,9 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CompraParceladaId"));
 
-                    b.Property<bool>("Cancelada")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("Cancelada")
+                        .IsRequired()
+                        .HasColumnType("varchar(1)");
 
                     b.Property<string>("CategoriaParcela")
                         .IsRequired()
@@ -84,8 +85,9 @@ namespace KBank_Web_API.Migrations
                     b.Property<int>("NumeroParcela")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Processada")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("Processada")
+                        .IsRequired()
+                        .HasColumnType("varchar(1)");
 
                     b.Property<string>("TipoParcela")
                         .IsRequired()
@@ -109,14 +111,12 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TransacaoId"));
 
-                    b.Property<bool>("Cancelada")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("CategoriaCompra")
+                    b.Property<string>("Cancelada")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(1)");
 
                     b.Property<string>("CategoriaTransacao")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataTransacao")

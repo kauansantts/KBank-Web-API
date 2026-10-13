@@ -17,7 +17,7 @@ public class CompraParcelada
     public int CompraParceladaId { get; set; }
     [Required(ErrorMessage ="Nome do produto é obrigatorio!")]
     public string NomeProduto { get; set; }
-    [ValorValidations]
+    [ValorTransacaoValidations]
     [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
     public double ValorParcela { get; set; }
     public DateTime DataCompra { get; set; } = DateTime.Now;
@@ -25,8 +25,8 @@ public class CompraParcelada
     [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
     public int? QuantidadeParcelada { get; set; }
     public TipoEnum TipoCompra { get; set; } = TipoEnum.Despesa;
-    [Required(ErrorMessage = "Categoria da compra é obrigatorio")]
-    public CategoriaCompraEnum CategoriaParcela { get; set; }
+    [Required(ErrorMessage = "Categoria da parcela é obrigatorio!")]
+    public CategoriaEnum CategoriaParcela { get; set; }
     public bool Cancelada { get; set; }
     public ICollection<Parcela> Parcelas { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using KBank_Web_API.Models;
+using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
 
 namespace KBank_Web_API.Service
@@ -29,8 +30,17 @@ namespace KBank_Web_API.Service
                 {
                     await _parcelaRepo.DeletedParcela(parcela);
                     compra.Cancelada = true;
-                    await _compraRepo.SaveChangesAsync(compra);
                 }
+            }
+            await _compraRepo.SaveChangesAsync(compra);
+            return compra;
+        }
+
+        public CompraParcelada VerificarCategoria(CompraParcelada compra)
+        {
+            if (compra.CategoriaParcela == CategoriaEnum.fixa)
+            {
+                throw new ArgumentNullException();
             }
             return compra;
         }

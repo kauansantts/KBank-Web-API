@@ -24,12 +24,14 @@ namespace KBank_Web_API.Infra
                 .HasConversion<string>();
 
             modelBuilder.Entity<Transacao>()
-                .Property(x => x.CategoriaParcela)
+                .Property(x => x.Identificador)
                 .HasConversion<string>();
 
             modelBuilder.Entity<Transacao>()
-                .Property(x => x.Identificador)
+                .Property(x => x.Cancelada)
                 .HasConversion<string>();
+
+
 
 
             modelBuilder.Entity<CompraParcelada>()
@@ -39,6 +41,10 @@ namespace KBank_Web_API.Infra
             modelBuilder.Entity<CompraParcelada>()
                 .Property(x => x.TipoCompra)
                 .HasConversion<string>();
+            modelBuilder.Entity<CompraParcelada>()
+                .Property(x => x.Cancelada)
+                .HasConversion<string>();
+
 
 
             modelBuilder.Entity<Parcela>()
@@ -47,6 +53,9 @@ namespace KBank_Web_API.Infra
 
             modelBuilder.Entity<Parcela>()
                 .Property(x => x.TipoParcela)
+                .HasConversion<string>();
+            modelBuilder.Entity<Parcela>()
+                .Property(x => x.Processada)
                 .HasConversion<string>();
         }
     }

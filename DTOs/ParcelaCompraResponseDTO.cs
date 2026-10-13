@@ -8,6 +8,7 @@ namespace KBank_Web_API.DTOs
 {
     public class ParcelaCompraResponseDTO
     {
+        public int ParcelaId { get; set; }
         public int NumeroParcela { get; set; }
         [ValorTransacaoValidations]
         public double ValorParcela { get; set; }
@@ -16,6 +17,6 @@ namespace KBank_Web_API.DTOs
         [Required(ErrorMessage = "Categoria da parcela é obrigatorio")]
         public TipoEnum TipoParcela { get; set; }
         [Required(ErrorMessage = "Categoria da parcela é obrigatorio")]
-        public CategoriaCompraEnum CategoriaParcela { get; set; }
+        public CategoriaEnum CategoriaParcela { get; set; }
     }
 }

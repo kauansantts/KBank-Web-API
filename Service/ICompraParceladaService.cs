@@ -5,5 +5,6 @@ namespace KBank_Web_API.Service
     public interface ICompraParceladaService
     {
         public Task<CompraParcelada> CancelarCompraParcelada(int id);
+        public CompraParcelada VerificarCategoria(CompraParcelada compra);
     }
 }

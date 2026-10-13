@@ -41,6 +41,8 @@ public class TransacaoRepository : ITransacaoRepository
         return transacao;
     }
 
+
+
     public async Task SaveChangesAsync(Transacao transacao)
     {
         if(transacao is null)
@@ -49,6 +51,17 @@ public class TransacaoRepository : ITransacaoRepository
         }
 
         _context.Add(transacao);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Transacao transacao)
+    {
+        if(transacao is null)
+        {
+            throw new ArgumentNullException();
+        }
+
+        _context.Update(transacao);
         await _context.SaveChangesAsync();
     }
 }

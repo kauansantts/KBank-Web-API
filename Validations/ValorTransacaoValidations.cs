@@ -8,7 +8,7 @@ namespace KBank_Web_API.Validations
         {
             if (value == null || string.IsNullOrEmpty(value.ToString()))
             {
-                return ValidationResult.Success;
+                return new ValidationResult("Valor da transação é obrigatorio");
             }
 
             double valor = (double)value;

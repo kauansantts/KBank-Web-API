@@ -11,7 +11,7 @@ namespace KBank_Web_API.DTOs
         public string NomeProduto { get; set; }
         public string DataCompra { get; set; }
         public int? QuantidadeParcelada { get; set; }
-        public CategoriaCompraEnum CategoriaParcela { get; set; }
+        public CategoriaEnum CategoriaParcela { get; set; }
         public TipoEnum TipoCompra { get; set; }
         public bool Cancelada { get; set; }
         public IEnumerable<ParcelaCompraResponseDTO> Parcelas { get; set; }

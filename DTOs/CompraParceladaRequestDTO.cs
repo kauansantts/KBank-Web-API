@@ -9,13 +9,12 @@ namespace KBank_Web_API.DTOs
         
         [Required(ErrorMessage = "Nome do produto é obrigatorio!")]
         public string NomeProduto { get; set; }
-        [ValorValidations]
-        [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
+        [ValorTransacaoValidations]
         public double? ValorParcela { get; set; }
         [QuantidadeParcelaValidations]
         [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
         public int? QuantidadeParcelada { get; set; }
-        [Required(ErrorMessage = "Categoria da transacao é obrigatorio e so aceita livre e inesperada!")]
-        public CategoriaCompraEnum CategoriaParcela { get; set; } 
+        [Required(ErrorMessage ="Categoria da parcela é obrigatorio!")]
+        public CategoriaEnum CategoriaParcela { get; set; } 
     }
 }

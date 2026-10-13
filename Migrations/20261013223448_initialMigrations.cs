@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KBank_Web_API.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigrationsfor : Migration
+    public partial class initialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +30,7 @@ namespace KBank_Web_API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CategoriaParcela = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Ativa = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    Cancelada = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,6 +93,8 @@ namespace KBank_Web_API.Migrations
                     TransacaoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DataTransacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Identificador = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     TipoTransacao = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CategoriaTransacao = table.Column<string>(type: "longtext", nullable: false)
@@ -101,7 +103,8 @@ namespace KBank_Web_API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ValorTransacao = table.Column<double>(type: "double", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: true),
-                    ParcelaId = table.Column<int>(type: "int", nullable: true)
+                    ParcelaId = table.Column<int>(type: "int", nullable: true),
+                    Cancelada = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {

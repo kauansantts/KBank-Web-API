@@ -1,4 +1,5 @@
 ﻿using KBank_Web_API.Models;
+using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
 
 namespace KBank_Web_API.Service
@@ -17,11 +18,16 @@ namespace KBank_Web_API.Service
             var transacao = await _transacaoRepo.GetTransacaoAsync(id);
             if(transacao is null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("ID invalido");
+            }
+
+            if(transacao.Identificador == IdentificadorEnum.CompraParcelada)
+            {
+                throw new OperationCanceledException("Não é possivel cancelar uma transação parcelada\nApenas cancelar a parcela!");
             }
 
             transacao.Cancelada = true;
-            await _transacaoRepo.SaveChangesAsync(transacao);
+            await _transacaoRepo.UpdateAsync(transacao);
             return transacao;
         }
     }

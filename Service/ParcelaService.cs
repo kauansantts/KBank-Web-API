@@ -29,8 +29,7 @@ namespace KBank_Web_API.Service
                     {
                         DataTransacao = parcela.DataParcela,
                         Identificador = IdentificadorEnum.CompraParcelada,
-                        CategoriaTransacao = null,
-                        CategoriaParcela = parcela.CategoriaParcela,
+                        CategoriaTransacao = parcela.CategoriaParcela,
                         Descricao = null,
                         ValorTransacao = parcela.ValorParcela,
                         ParcelaId = parcela.ParcelaId,
@@ -58,8 +57,7 @@ namespace KBank_Web_API.Service
             {
                 DataTransacao = parcela.DataParcela,
                 Identificador = IdentificadorEnum.CompraParcelada,
-                CategoriaTransacao = null,
-                CategoriaParcela = parcela.CategoriaParcela,
+                CategoriaTransacao = parcela.CategoriaParcela,
                 Descricao = null,
                 ValorTransacao = parcela.ValorParcela,
                 ParcelaId = parcela.ParcelaId,

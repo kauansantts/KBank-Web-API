@@ -16,7 +16,6 @@ namespace KBank_Web_API.DTOs
         public TipoEnum TipoTransacao { get; set; }
         [Required(ErrorMessage = "Categoria da transacao é obrigatorio")]
         public CategoriaEnum CategoriaTransacao { get; set; }
-        public CategoriaCompraEnum? CategoriaCompra { get; set; }
         public string? Descricao { get; set; }
         [ValorTransacaoValidations]
         [Required(ErrorMessage = "Valor da transacao é obrigatorio")]

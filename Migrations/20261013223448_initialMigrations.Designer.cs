@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261012155706_validationAndOnModelMigrations")]
-    partial class validationAndOnModelMigrations
+    [Migration("20261013223448_initialMigrations")]
+    partial class initialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,17 +109,21 @@ namespace KBank_Web_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TransacaoId"));
 
-                    b.Property<string>("CategoriaCompra")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<bool>("Cancelada")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("CategoriaTransacao")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataTransacao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Descricao")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Identificador")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int?>("ParcelaId")

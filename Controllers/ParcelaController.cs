@@ -53,11 +53,11 @@ namespace KBank_Web_API.Controllers
             try
             {
                 var processamento = await _parcelaService.ProcessarParcelas();
-                if (!processamento.Any())
-                {
-                    return BadRequest("Você não tem parcelas para processar!");
-                }
-                var processamentoDto = _mapper.Map<ParcelaCompraResponseDTO>(processamento);
+            if (!processamento.Any())
+            {
+                return BadRequest("Você não tem parcelas para processar!");
+            }
+            var processamentoDto = _mapper.Map<IEnumerable<ParcelaCompraResponseDTO>>(processamento);
 
                 return Ok(processamentoDto);
             }

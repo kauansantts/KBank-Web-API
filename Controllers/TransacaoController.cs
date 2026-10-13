@@ -52,17 +52,16 @@ namespace KBank_Web_API.Controllers
         {
             var transacao = _mapper.Map<Transacao>(transacaoRequestDTO);
             
-            //try
-            //{
+            try
+            {
                 var transacaoCriada = await _repository.CreatedAsync(transacao);
                 var transacaoCriadaResponseDto = _mapper.Map<TransacaoResponseDTO>(transacaoCriada);
                 return StatusCode(201, transacaoCriadaResponseDto);     
-            //}
-            //catch
-            //{
-            //    return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
-            //}
-            
+            }
+            catch
+            {
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+            }    
         }
 
         [HttpDelete]
@@ -74,9 +73,12 @@ namespace KBank_Web_API.Controllers
                 var transacaoDeletadaDto = _mapper.Map<TransacaoResponseDTO>(transacaoDeletada);
                 return Ok(transacaoDeletadaDto);
             }
-            catch
+            catch(ArgumentNullException ex)
             {
-                return BadRequest("ID invalido/erro inesperado, verifique com o ADM!");
+                return NotFound(ex.Message);
+            }catch(OperationCanceledException ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
