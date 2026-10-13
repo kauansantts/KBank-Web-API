@@ -12,14 +12,9 @@ namespace KBank_Web_API.Validations
             }
 
             int valor = (int)value;
-            if (valor < 0)
+            if (valor < 2)
             {
-                return new ValidationResult("Existe quantidade de parcelas negativas meu querido?");
-            }
-
-            if(valor == 0)
-            {
-                return new ValidationResult("Minimo de uma parcela!");
+                return new ValidationResult("Minimo de duas parcela!");
             }
 
             return ValidationResult.Success;

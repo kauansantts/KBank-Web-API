@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KBank_Web_API.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace KBank_Web_API.Validations
 {
@@ -11,7 +12,10 @@ namespace KBank_Web_API.Validations
                 return ValidationResult.Success;
             }
 
-            if (value == "fixa")
+            var valor = CategoriaEnum.fixa;
+            var valorRecebido = (CategoriaEnum)value;
+
+            if (valorRecebido == valor)
             {
                 return new ValidationResult("Compra parcelada so aceita livre e inesperada");
             }
