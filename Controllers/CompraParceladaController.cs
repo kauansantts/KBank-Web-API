@@ -72,6 +72,7 @@ namespace KBank_Web_API.Controllers
                 return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
             }
         }
+
         [HttpPost("/Data-personalizada")]
         public async Task<ActionResult<CompraParceladaResponseDTO>> CreatedPersonalizado([FromBody] CompraParcelaProvisorioDTO compraParceladaDto)
         {

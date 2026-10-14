@@ -47,6 +47,22 @@ namespace KBank_Web_API.Controllers
             return Ok(transacoesDto);
         }
 
+
+        [HttpGet("/Transações-por-data")]
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetTransacoesData([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
+        {
+            try
+            {
+                var transacoes = await _transacaoService.GetTransacaoData(dataInicial, dataFinal);
+                var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
+                return Ok(transacoesDto);
+            }
+            catch(ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<TransacaoResponseDTO>> Created([FromBody]TransacaoRequestDTO transacaoRequestDTO)
         {

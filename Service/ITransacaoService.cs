@@ -5,5 +5,6 @@ namespace KBank_Web_API.Service
     public interface ITransacaoService
     {
         public Task<Transacao> CancelarTransacao(int id);
+        public Task<IEnumerable<Transacao>> GetTransacaoData(DateTime dataInicial, DateTime dataFinal);
     }
 }

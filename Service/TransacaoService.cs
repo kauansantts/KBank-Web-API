@@ -30,5 +30,24 @@ namespace KBank_Web_API.Service
             await _transacaoRepo.UpdateAsync(transacao);
             return transacao;
         }
+
+        public async Task<IEnumerable<Transacao>> GetTransacaoData(DateTime dataInicial, DateTime dataFinal)
+        {
+            var ListTransacoes = new List<Transacao>();
+            var transacoes = await _transacaoRepo.GetTransacoesAsync();
+            foreach (var transacao in transacoes)
+            {
+                if(transacao.DataTransacao >= dataInicial && transacao.DataTransacao <= dataFinal)
+                {
+                    ListTransacoes.Add(transacao);
+                }
+            }
+            if (!ListTransacoes.Any())
+            {
+                throw new ArgumentNullException("Não possui transações nesse periodo!");
+            }
+
+            return ListTransacoes;
+        }
     }
 }
