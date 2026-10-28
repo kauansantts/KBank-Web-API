@@ -20,7 +20,7 @@ namespace KBank_Web_API.DTOs
         [ValorTransacaoValidations]
         [Required(ErrorMessage = "Valor da transacao é obrigatorio")]
         public double ValorTransacao { get; set; }
-        public int? UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
         public int? ParcelaId { get; set; }
         public bool Cancelada { get; set; }
     }

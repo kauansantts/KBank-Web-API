@@ -20,9 +20,9 @@ namespace KBank_Web_API.Models;
         [ValorTransacaoValidations]  
         [Required(ErrorMessage ="Valor da transacao é obrigatorio")]
         public double ValorTransacao { get; set; }
-        public int? UsuarioId { get; set; }
+        public string UsuarioId { get; set; } = null!;
         [JsonIgnore]
-        public Usuario? usuario { get; set; }
+        public ApplicationUser usuario { get; set; } = null!;
         public int? ParcelaId { get; set; }
         [JsonIgnore]
         public Parcela? Parcela { get; set; }
