@@ -41,11 +41,12 @@ builder.Services.AddScoped<IParcelaRepository, ParcelaRepository>();
 builder.Services.AddScoped<IParcelaService, ParcelaService>();
 builder.Services.AddScoped<ICompraParceladaService, CompraParceladaService>();
 builder.Services.AddScoped<ITransacaoService, TransacaoService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 //Config identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
-var key = builder.Configuration.GetSection("JWT").GetValue<string>("SecretKey");
+var key = builder.Configuration.GetSection("JWT").GetValue<string>("SecretKey") ?? throw new ArgumentNullException("Chave secreta nao encontrada!");
 
 //config autenticação e autorização
 builder.Services.AddAuthentication(options =>
@@ -63,7 +64,9 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!))
+        ValidAudience = builder.Configuration.GetSection("JWT").GetValue<string>("ValidAudience"),
+        ValidIssuer = builder.Configuration.GetSection("JWT").GetValue<string>("ValidIssuer"),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
     };
 });
 builder.Services.AddAuthorization();
