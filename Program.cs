@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +45,7 @@ builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 //Config identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+var key = builder.Configuration.GetSection("JWT").GetValue<string>("SecretKey");
 
 //config autenticação e autorização
 builder.Services.AddAuthentication(options =>
@@ -60,7 +62,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ClockSkew = TimeSpan.Zero,
         ValidateLifetime = true,
-        //faltando assinatura!
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!))
     };
 });
 builder.Services.AddAuthorization();
