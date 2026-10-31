@@ -1,17 +1,21 @@
 ﻿using KBank_Web_API.Models;
 using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace KBank_Web_API.Service
 {
     public class TransacaoService : ITransacaoService
     {
         private readonly ITransacaoRepository _transacaoRepo;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TransacaoService(ITransacaoRepository transacaoRepo)
+        public TransacaoService(ITransacaoRepository transacaoRepo, UserManager<ApplicationUser> userManager)
         {
             _transacaoRepo = transacaoRepo;
+            _userManager = userManager;
         }
+
 
         public async Task<Transacao> CancelarTransacao(int id)
         {
@@ -48,6 +52,26 @@ namespace KBank_Web_API.Service
             }
 
             return ListTransacoes;
+        }
+
+        public async Task<bool> AtualizarSaldoUsuario(double saldoTransacao, TipoEnum tipo, ApplicationUser user)
+        {
+            if(tipo == TipoEnum.Despesa)
+            {
+                user.SaldoUser -= saldoTransacao;
+            }
+            else
+            {
+                user.SaldoUser += saldoTransacao;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return false;
+            }
+            return true;
+
         }
     }
 }

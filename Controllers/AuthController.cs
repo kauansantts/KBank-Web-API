@@ -1,4 +1,5 @@
 ﻿using KBank_Web_API.DTOs.AuthDtos;
+using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
 using KBank_Web_API.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,6 +28,7 @@ namespace KBank_Web_API.Controllers
             _userManager = userManager;
         }
 
+        
         [HttpPost("/Login")]
         public async Task<IActionResult> login([FromBody] LoginDTO request)
         {
@@ -142,5 +144,23 @@ namespace KBank_Web_API.Controllers
                 ExpiredRefreshToken = novoLifeTime,
             });
         }
+
+        [HttpGet("/Dados-Usuário")]
+        public async Task<IActionResult> DadosUser()
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return BadRequest("Usuario não encontrado!");
+
+            return Ok(new
+            {
+                Id = usuario.Id,
+                Nome = usuario.UserName,
+                Email = usuario.Email,
+                Saldo = usuario.SaldoUser.ToString("F2")
+            });
+        }
+
+
     }
 }

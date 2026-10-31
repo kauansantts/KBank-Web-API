@@ -10,12 +10,12 @@ namespace KBank_Web_API.DTOs
     {
         public MapeamentoDTOProfile()
         {
-            CreateMap<CompraParcelada, CompraParcelaProvisorioRequest>()
+            CreateMap<CompraParcelada, CompraParceladaRequestDTO>()
                 .ForMember(
                 dest => dest.DataCompra,
                 opt => opt.MapFrom(src => src.DataCompra.ToString("dd/MM/yyyy"))
             ).ReverseMap();
-            CreateMap<CompraParcelada, CompraParcelaProvisorioResponse>()
+            CreateMap<CompraParcelada, CompraParceladaResponseDTO>()
                 .ForMember(
                 dest => dest.DataCompra,
                 opt => opt.MapFrom(src => src.DataCompra.ToString("dd/MM/yyyy"))

@@ -70,8 +70,8 @@ namespace KBank_Web_API.Migrations
                     b.Property<DateTime>("RefreshTokenExpireTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<decimal>("SaldoUser")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<double>("SaldoUser")
+                        .HasColumnType("double");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");

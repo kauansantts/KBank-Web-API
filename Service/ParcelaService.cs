@@ -1,6 +1,7 @@
 ﻿using KBank_Web_API.Models;
 using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace KBank_Web_API.Service
@@ -9,11 +10,13 @@ namespace KBank_Web_API.Service
     {
         private readonly IParcelaRepository _parcelaRepo;
         private readonly ITransacaoRepository _transacaoRepo;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ParcelaService(IParcelaRepository parcelaRepo, ICompraParceladaRepository compraParceladaRepo, ITransacaoRepository transacaoRepo)
+        public ParcelaService(IParcelaRepository parcelaRepo, ICompraParceladaRepository compraParceladaRepo, ITransacaoRepository transacaoRepo, UserManager<ApplicationUser> userManager)
         {
             _parcelaRepo = parcelaRepo;
             _transacaoRepo = transacaoRepo;
+            _userManager = userManager;
         }
 
         public async Task<(IEnumerable<Transacao> transacoes, IEnumerable<Parcela> parcelas)> ProcessarParcelas(ApplicationUser user)
@@ -38,6 +41,11 @@ namespace KBank_Web_API.Service
                         TipoTransacao = parcela.TipoParcela,
                         UsuarioId = user.Id
                     };
+                    var SaveSaldoUser = await AtualizarSaldoUsuario(transacao.ValorTransacao, transacao.TipoTransacao, user);
+                    if (SaveSaldoUser is false)
+                    {
+                        throw new InvalidOperationException("Falha ao salvar alterações no banco!");
+                    }
                     ListTransacaoGeradas.Add(transacao);
                     await _transacaoRepo.SaveTransacaoAsync(transacao);
                     parcela.Processada = true;
@@ -69,11 +77,36 @@ namespace KBank_Web_API.Service
                 TipoTransacao = parcela.TipoParcela,
                 UsuarioId = user.Id
             };
+            var SaveSaldoUser = await AtualizarSaldoUsuario(transacao.ValorTransacao, transacao.TipoTransacao, user);
+            if(SaveSaldoUser is false)
+            {
+                throw new InvalidOperationException("Falha ao salvar alterações no banco!");
+            }
             await _transacaoRepo.SaveTransacaoAsync(transacao);
             parcela.Processada = true;
             await _parcelaRepo.SaveChangesAsync(parcela);
 
             return parcela;
+        }
+
+        public async Task<bool> AtualizarSaldoUsuario(double saldoParcela, TipoEnum tipo, ApplicationUser user)
+        {
+            if (tipo == TipoEnum.Despesa)
+            {
+                user.SaldoUser -= saldoParcela;
+            }
+            else
+            {
+                user.SaldoUser += saldoParcela;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return false;
+            }
+            return true;
+
         }
     }
 }

@@ -71,7 +71,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpPost]//por enquanto nao vai funcionar pois tem que fazer a relação com o usuario ID
+        [HttpPost]
         public async Task<ActionResult<TransacaoResponseDTO>> Created([FromBody]TransacaoRequestDTO transacaoRequestDTO)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?. Value;
@@ -80,10 +80,16 @@ namespace KBank_Web_API.Controllers
 
             var transacao = _mapper.Map<Transacao>(transacaoRequestDTO);
             transacao.UsuarioId = usuario.Id;
+            var saldoTransacao = transacao.ValorTransacao;
+            var tipo = transacao.TipoTransacao;
 
             try
             {
+                var atualizarSaldoUser = await _transacaoService.AtualizarSaldoUsuario(saldoTransacao, tipo, usuario);
+                if (atualizarSaldoUser is false) return BadRequest("Falha ao salvar saldo do usuario no banco!\nVerifique com o ADM");
+
                 var transacaoCriada = await _repository.CreatedAsync(transacao);
+
                 var transacaoCriadaResponseDto = _mapper.Map<TransacaoResponseDTO>(transacaoCriada);
                 return StatusCode(201, transacaoCriadaResponseDto);     
             }

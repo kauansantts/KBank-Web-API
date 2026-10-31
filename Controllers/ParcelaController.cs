@@ -93,6 +93,10 @@ namespace KBank_Web_API.Controllers
                 var processDto = _mapper.Map<ParcelaResponseDTO>(process);
                 return Ok(processDto);
             }
+            catch(InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch
             {
                 return NotFound("ID invalido!");

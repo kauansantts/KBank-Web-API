@@ -1,7 +1,4 @@
-﻿using KBank_Web_API.Models;
-using KBank_Web_API.Models.Enums;
-using KBank_Web_API.Validations;
-using System.ComponentModel.DataAnnotations;
+﻿using KBank_Web_API.Models.Enums;
 
 namespace KBank_Web_API.DTOs.Response
 {
