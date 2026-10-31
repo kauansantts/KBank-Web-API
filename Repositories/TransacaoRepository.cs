@@ -43,7 +43,7 @@ public class TransacaoRepository : ITransacaoRepository
 
 
 
-    public async Task SaveChangesAsync(Transacao transacao)
+    public async Task SaveTransacaoAsync(Transacao transacao)
     {
         if(transacao is null)
         {

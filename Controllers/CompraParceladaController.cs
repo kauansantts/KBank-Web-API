@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
-using KBank_Web_API.DTOs;
+using KBank_Web_API.DTOs.Request;
+using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
 using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
 using KBank_Web_API.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KBank_Web_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CompraParceladaController : ControllerBase
@@ -47,34 +50,34 @@ namespace KBank_Web_API.Controllers
             return comprasDTO;
         }
         
+        //[HttpPost]
+        //public async  Task<ActionResult<CompraParceladaResponseDTO>> Created([FromBody]CompraParceladaRequestDTO compraParceladaRequestDto)
+        //{
+
+        //    var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaRequestDto);
+
+        //    try
+        //    {
+        //        _compraService.VerificarCategoria(compraParcelada);
+        //    }
+        //    catch
+        //    {
+        //        return BadRequest("Categoria da transacao é obrigatorio e so aceita livre e inesperada");
+        //    }
+
+        //    try
+        //    {
+        //        var compraP = await _compra.CreatedAsync(compraParcelada);
+        //        var compraDTO = _mapper.Map<CompraParceladaResponseDTO>(compraP);
+        //        return StatusCode(201, compraDTO);
+        //    }catch
+        //    {
+        //        return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+        //    }
+        //}
+
         [HttpPost]
-        public async  Task<ActionResult<CompraParceladaResponseDTO>> Created([FromBody]CompraParceladaRequestDTO compraParceladaRequestDto)
-        {
-
-            var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaRequestDto);
-
-            try
-            {
-                _compraService.VerificarCategoria(compraParcelada);
-            }
-            catch
-            {
-                return BadRequest("Categoria da transacao é obrigatorio e so aceita livre e inesperada");
-            }
-
-            try
-            {
-                var compraP = await _compra.CreatedAsync(compraParcelada);
-                var compraDTO = _mapper.Map<CompraParceladaResponseDTO>(compraP);
-                return StatusCode(201, compraDTO);
-            }catch
-            {
-                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
-            }
-        }
-
-        [HttpPost("/Data-personalizada")]
-        public async Task<ActionResult<CompraParceladaResponseDTO>> CreatedPersonalizado([FromBody] CompraParcelaProvisorioDTO compraParceladaDto)
+        public async Task<ActionResult<CompraParceladaResponseDTO>> CreatedPersonalizado([FromBody] CompraParcelaProvisorioRequest compraParceladaDto)
         {
             var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaDto);
 
@@ -90,7 +93,7 @@ namespace KBank_Web_API.Controllers
             try
             {
                 var compraP = await _compra.CreatedAsync(compraParcelada);
-                var compraDTO = _mapper.Map<CompraParceladaResponseDTO>(compraP);
+                var compraDTO = _mapper.Map<CompraParcelaProvisorioResponse>(compraP);
                 return StatusCode(201, compraDTO);
             }
             catch

@@ -11,5 +11,6 @@ namespace KBank_Web_API.DTOs.AuthDtos
         public string Email { get; set; } = null!;
         [Required(ErrorMessage = "Senha de usuario é obrigatorio")]
         public string Senha { get; set; } = null!;
+        public decimal SaldoUser { get; set; } = 0;
     }
 }

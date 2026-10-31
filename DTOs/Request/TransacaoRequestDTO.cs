@@ -4,14 +4,10 @@ using KBank_Web_API.Validations;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace KBank_Web_API.DTOs
+namespace KBank_Web_API.DTOs.Request
 {
-    public class TransacaoResponseDTO
+    public class TransacaoRequestDTO
     {
-        [Key]
-        public int TransacaoId { get; set; }
-        public IdentificadorEnum Identificador { get; set; }
-        public string DataTransacao { get; set; }
         [Required(ErrorMessage = "Tipo da transacao é obrigatorio")]
         public TipoEnum TipoTransacao { get; set; }
         [Required(ErrorMessage = "Categoria da transacao é obrigatorio")]
@@ -20,8 +16,5 @@ namespace KBank_Web_API.DTOs
         [ValorTransacaoValidations]
         [Required(ErrorMessage = "Valor da transacao é obrigatorio")]
         public double ValorTransacao { get; set; }
-        public string UsuarioId { get; set; }
-        public int? ParcelaId { get; set; }
-        public bool Cancelada { get; set; }
     }
 }

@@ -15,8 +15,8 @@ public class CompraParcelada
 
     [Key]
     public int CompraParceladaId { get; set; }
-    [Required(ErrorMessage ="Nome do produto é obrigatorio!")]
-    public string NomeProduto { get; set; }
+    [Required(ErrorMessage ="Descrição da compra é obrigatorio!")]
+    public string Descricao { get; set; }
     [ValorTransacaoValidations]
     [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
     public double ValorParcela { get; set; }
@@ -40,7 +40,8 @@ public class CompraParcelada
                 ValorParcela = ValorParcela,
                 DataParcela = DataCompra.AddMonths(i+1),
                 NumeroParcela = i+1,
-                CategoriaParcela = CategoriaParcela
+                CategoriaParcela = CategoriaParcela,
+                Descricao = Descricao
             });
         }
     }

@@ -1,0 +1,16 @@
+﻿using KBank_Web_API.Models.Enums;
+
+namespace KBank_Web_API.DTOs.Response
+{
+    public class CompraParcelaProvisorioResponse
+    {
+        public int CompraParceladaId { get; set; }
+        public string Descricao { get; set; }
+        public string DataCompra { get; set; }
+        public int? QuantidadeParcelada { get; set; }
+        public CategoriaEnum CategoriaParcela { get; set; }
+        public TipoEnum TipoCompra { get; set; }
+        public bool Cancelada { get; set; }
+        public IEnumerable<ParcelaCompraResponseDTO> Parcelas { get; set; }
+    }
+}

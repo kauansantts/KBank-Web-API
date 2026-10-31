@@ -3,12 +3,12 @@ using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Validations;
 using System.ComponentModel.DataAnnotations;
 
-namespace KBank_Web_API.DTOs
+namespace KBank_Web_API.DTOs.Response
 {
     public class CompraParceladaResponseDTO
     {
         public int CompraParceladaId { get; set; }
-        public string NomeProduto { get; set; }
+        public string Descricao { get; set; }
         public string DataCompra { get; set; }
         public int? QuantidadeParcelada { get; set; }
         public CategoriaEnum CategoriaParcela { get; set; }

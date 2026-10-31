@@ -70,7 +70,7 @@ namespace KBank_Web_API.Controllers
             return Unauthorized();
         }
 
-        [HttpPost("/Register")]
+        [HttpPost("/Cadastro")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO request)
         {
             var userExistente = await _userManager.FindByNameAsync(request.NomeUsuario);
@@ -83,7 +83,8 @@ namespace KBank_Web_API.Controllers
             {
                 UserName = request.NomeUsuario,
                 Email = request.Email,
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString(),
+                SaldoUser = request.SaldoUser
             };
 
             var result = await _userManager.CreateAsync(user, request.Senha);
@@ -119,8 +120,9 @@ namespace KBank_Web_API.Controllers
                 return BadRequest("Operação invalida! Possiveis causas:\n-Usuario invalido\n-RefreshToken invalido\n-Validade do token expirada\nVerifique melhor!");
             }
 
-            var listClaims = claimsPrincipal.Claims.ToList();
-            var novoToken = _tokenService.GerarAccessToken(listClaims, _config);
+            var authClaims = await _tokenService.AtualizarClaimsUsuario(user);
+            if (authClaims is null) return BadRequest("Claims vazias!");
+            var novoToken = _tokenService.GerarAccessToken(authClaims, _config);
             var novoRefresh = _tokenService.GerarRefreshToken();
             var novoLifeTime = DateTime.UtcNow.AddMinutes(_config.GetSection("JWT").GetValue<int>("RefreshTokenValidityInMinutes"));
 

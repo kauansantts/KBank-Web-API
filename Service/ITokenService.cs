@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using KBank_Web_API.Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace KBank_Web_API.Service
@@ -8,5 +9,6 @@ namespace KBank_Web_API.Service
         JwtSecurityToken GerarAccessToken(IEnumerable<Claim> claims, IConfiguration _config);
         string GerarRefreshToken();
         ClaimsPrincipal GetPrincipalClaims(string token, IConfiguration _config);
+        Task<List<Claim>> AtualizarClaimsUsuario(ApplicationUser user);
     }
 }

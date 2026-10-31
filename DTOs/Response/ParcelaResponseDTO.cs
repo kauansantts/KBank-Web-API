@@ -1,13 +1,12 @@
-﻿using KBank_Web_API.Models;
-using KBank_Web_API.Models.Enums;
+﻿using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Validations;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace KBank_Web_API.DTOs
+namespace KBank_Web_API.DTOs.Response
 {
-    public class ParcelaCompraResponseDTO
+    public class ParcelaResponseDTO
     {
+        [Key]
         public int ParcelaId { get; set; }
         public int NumeroParcela { get; set; }
         [ValorTransacaoValidations]
@@ -18,5 +17,7 @@ namespace KBank_Web_API.DTOs
         public TipoEnum TipoParcela { get; set; }
         [Required(ErrorMessage = "Categoria da parcela é obrigatorio")]
         public CategoriaEnum CategoriaParcela { get; set; }
+        public bool Processada { get; set; }
+        public string Descricao { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace KBank_Web_API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -114,12 +114,11 @@ namespace KBank_Web_API.Migrations
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("NomeProduto")
+                    b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("QuantidadeParcelada")
-                        .IsRequired()
+                    b.Property<int>("QuantidadeParcelada")
                         .HasColumnType("int");
 
                     b.Property<string>("TipoCompra")
@@ -151,6 +150,10 @@ namespace KBank_Web_API.Migrations
 
                     b.Property<DateTime>("DataParcela")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("NumeroParcela")
                         .HasColumnType("int");

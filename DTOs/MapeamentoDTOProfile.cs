@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using KBank_Web_API.DTOs.Request;
+using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -8,7 +10,12 @@ namespace KBank_Web_API.DTOs
     {
         public MapeamentoDTOProfile()
         {
-            CreateMap<CompraParcelada, CompraParcelaProvisorioDTO>()
+            CreateMap<CompraParcelada, CompraParcelaProvisorioRequest>()
+                .ForMember(
+                dest => dest.DataCompra,
+                opt => opt.MapFrom(src => src.DataCompra.ToString("dd/MM/yyyy"))
+            ).ReverseMap();
+            CreateMap<CompraParcelada, CompraParcelaProvisorioResponse>()
                 .ForMember(
                 dest => dest.DataCompra,
                 opt => opt.MapFrom(src => src.DataCompra.ToString("dd/MM/yyyy"))

@@ -19,6 +19,7 @@ public class Parcela
     public CategoriaEnum CategoriaParcela { get; set; }
     public int CompraParceladaId { get; set; }
     public bool Processada { get; set; } = false;
+    public string Descricao { get; set; }
     [JsonIgnore]
     public CompraParcelada compraParcelada { get; set; }
 

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KBank_Web_API.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class v1Dnv : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

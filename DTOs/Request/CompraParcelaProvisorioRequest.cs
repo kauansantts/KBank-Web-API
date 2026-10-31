@@ -2,19 +2,20 @@
 using KBank_Web_API.Validations;
 using System.ComponentModel.DataAnnotations;
 
-namespace KBank_Web_API.DTOs
+namespace KBank_Web_API.DTOs.Request
 {
-    public class CompraParceladaRequestDTO
+    public class CompraParcelaProvisorioRequest
     {
-        
         [Required(ErrorMessage = "Nome do produto é obrigatorio!")]
-        public string NomeProduto { get; set; }
+        public string Descricao { get; set; }
+        public DateTime DataCompra { get; set; }
         [ValorTransacaoValidations]
+        [Required(ErrorMessage = "Valor da parcela é obrigatorio")]
         public double? ValorParcela { get; set; }
         [QuantidadeParcelaValidations]
         [Required(ErrorMessage = "Quantidade da parcela é obrigatorio")]
         public int? QuantidadeParcelada { get; set; }
-        [Required(ErrorMessage ="Categoria da parcela é obrigatorio!")]
-        public CategoriaEnum CategoriaParcela { get; set; } 
+        [Required(ErrorMessage = "Categoria da transacao é obrigatorio")]
+        public CategoriaEnum CategoriaParcela { get; set; }
     }
 }
