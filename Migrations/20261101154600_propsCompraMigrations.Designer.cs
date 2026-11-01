@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KBank_Web_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261031173509_fixSaldoUserMigrations")]
-    partial class fixSaldoUserMigrations
+    [Migration("20261101154600_propsCompraMigrations")]
+    partial class propsCompraMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,10 +128,16 @@ namespace KBank_Web_API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.Property<double>("ValorParcela")
                         .HasColumnType("double");
 
                     b.HasKey("CompraParceladaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("ComprasParceladas");
                 });
@@ -360,6 +366,17 @@ namespace KBank_Web_API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("KBank_Web_API.Models.CompraParcelada", b =>
+                {
+                    b.HasOne("KBank_Web_API.Models.ApplicationUser", "Usuario")
+                        .WithMany("ComprasParceladas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("KBank_Web_API.Models.Parcela", b =>
                 {
                     b.HasOne("KBank_Web_API.Models.CompraParcelada", "compraParcelada")
@@ -441,6 +458,8 @@ namespace KBank_Web_API.Migrations
 
             modelBuilder.Entity("KBank_Web_API.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("ComprasParceladas");
+
                     b.Navigation("Transacoes");
                 });
 

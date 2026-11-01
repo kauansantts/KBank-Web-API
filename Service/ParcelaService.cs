@@ -46,6 +46,7 @@ namespace KBank_Web_API.Service
                     {
                         throw new InvalidOperationException("Falha ao salvar alterações no banco!");
                     }
+
                     ListTransacaoGeradas.Add(transacao);
                     await _transacaoRepo.SaveTransacaoAsync(transacao);
                     parcela.Processada = true;

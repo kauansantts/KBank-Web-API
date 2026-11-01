@@ -13,19 +13,24 @@ namespace KBank_Web_API.Repositories
             _context = context;
         }
 
-        public async Task<CompraParcelada> GetCompraAsync(int id)
+        public async Task<CompraParcelada> GetCompraAsync(int id, ApplicationUser user)
         {
-            var compra =  await _context.ComprasParceladas.Include(p => p.Parcelas).FirstOrDefaultAsync(c => c.CompraParceladaId == id);
-            if(compra is null)
+            var compra =  await _context.ComprasParceladas.Include(p => p.Parcelas).FirstOrDefaultAsync(c => c.CompraParceladaId == id) ?? throw new ArgumentNullException();
+            var listCompraUser = user.ComprasParceladas.ToList();
+
+            foreach(var c in listCompraUser)
             {
-                throw new ArgumentNullException();
+                if(c == compra)
+                {
+                    return compra;
+                }
             }
-            return compra;
+            throw new InvalidOperationException($"Este ID de compra nao pertence ao usuario{user.UserName}");
         }
 
-        public async Task<IEnumerable<CompraParcelada>> GetComprasAsync()
+        public async Task<IEnumerable<CompraParcelada>> GetComprasAsync(ApplicationUser user)
         {
-            var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).ToListAsync();   
+            var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).Where(c => c.UsuarioId == user.Id).ToListAsync();   
             return compras; 
         }
 

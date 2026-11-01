@@ -28,6 +28,8 @@ public class CompraParcelada
     [Required(ErrorMessage = "Categoria da parcela é obrigatorio!")]
     public CategoriaEnum CategoriaParcela { get; set; }
     public bool Cancelada { get; set; }
+    public string UsuarioId { get; set; }
+    public ApplicationUser Usuario { get; set; }
     public ICollection<Parcela> Parcelas { get; set; }
 
     public void GerarParcelas()

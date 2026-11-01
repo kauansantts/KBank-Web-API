@@ -6,6 +6,7 @@ namespace KBank_Web_API.Models
     {
         public double SaldoUser { get; set; } = 0;
         public ICollection<Transacao> Transacoes { get; set; } = new List<Transacao>();
+        public ICollection<CompraParcelada> ComprasParceladas { get; set; } = new List<CompraParcelada>();
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpireTime { get; set; }
     }

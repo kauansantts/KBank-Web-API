@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KBank_Web_API.Migrations
 {
     /// <inheritdoc />
-    public partial class v1Dnv : Migration
+    public partial class propsCompraMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,7 +40,7 @@ namespace KBank_Web_API.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    SaldoUser = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    SaldoUser = table.Column<double>(type: "double", nullable: false),
                     RefreshToken = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     RefreshTokenExpireTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -70,30 +70,6 @@ namespace KBank_Web_API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ComprasParceladas",
-                columns: table => new
-                {
-                    CompraParceladaId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    NomeProduto = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ValorParcela = table.Column<double>(type: "double", nullable: false),
-                    DataCompra = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    QuantidadeParcelada = table.Column<int>(type: "int", nullable: false),
-                    TipoCompra = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CategoriaParcela = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cancelada = table.Column<string>(type: "varchar(1)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ComprasParceladas", x => x.CompraParceladaId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -225,6 +201,38 @@ namespace KBank_Web_API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "ComprasParceladas",
+                columns: table => new
+                {
+                    CompraParceladaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Descricao = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ValorParcela = table.Column<double>(type: "double", nullable: false),
+                    DataCompra = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    QuantidadeParcelada = table.Column<int>(type: "int", nullable: false),
+                    TipoCompra = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CategoriaParcela = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Cancelada = table.Column<string>(type: "varchar(1)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UsuarioId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ComprasParceladas", x => x.CompraParceladaId);
+                    table.ForeignKey(
+                        name: "FK_ComprasParceladas_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Parcelas",
                 columns: table => new
                 {
@@ -239,6 +247,8 @@ namespace KBank_Web_API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CompraParceladaId = table.Column<int>(type: "int", nullable: false),
                     Processada = table.Column<string>(type: "varchar(1)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Descricao = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -330,6 +340,11 @@ namespace KBank_Web_API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ComprasParceladas_UsuarioId",
+                table: "ComprasParceladas",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Parcelas_CompraParceladaId",
                 table: "Parcelas",
                 column: "CompraParceladaId");
@@ -370,13 +385,13 @@ namespace KBank_Web_API.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Parcelas");
 
             migrationBuilder.DropTable(
                 name: "ComprasParceladas");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

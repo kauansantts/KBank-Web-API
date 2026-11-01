@@ -11,6 +11,7 @@ namespace KBank_Web_API.DTOs.Response
         public CategoriaEnum CategoriaParcela { get; set; }
         public TipoEnum TipoCompra { get; set; }
         public bool Cancelada { get; set; }
+        public string UsuarioId { get; set; }
         public IEnumerable<ParcelaCompraResponseDTO> Parcelas { get; set; }
     }
 }

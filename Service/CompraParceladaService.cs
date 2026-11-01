@@ -15,25 +15,40 @@ namespace KBank_Web_API.Service
             _parcelaRepo = parcelaRepo;
         }
 
-        public async Task<CompraParcelada> CancelarCompraParcelada(int id)
+        public async Task<CompraParcelada> CancelarCompraParcelada(int id, ApplicationUser user)
         {
-            var compra = await _compraRepo.GetCompraAsync(id);
-            if (compra is null)
+            try
             {
-                throw new ArgumentNullException();
+                var compra = await _compraRepo.GetCompraAsync(id, user);
+
+                //var parcelas = await _parcelaRepo.GetParcelas();
+                //foreach (var parcela in parcelas)
+                //{
+                //    if (parcela.CompraParceladaId == compra.CompraParceladaId && parcela.Processada == false)
+                //    {
+                //        await _parcelaRepo.DeletedParcela(parcela);
+                //        compra.Cancelada = true;
+                //    }
+                //}
+                foreach (var parcela in compra.Parcelas)
+                {
+                    if (parcela.CompraParceladaId == compra.CompraParceladaId && parcela.Processada == false)
+                    {
+                        await _parcelaRepo.DeletedParcela(parcela);
+                        compra.Cancelada = true;
+                    }
+                }
+                await _compraRepo.SaveChangesAsync(compra);
+                return compra;
+            } catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            catch
+            {
+                throw new Exception();
             }
 
-            var parcelas = await _parcelaRepo.GetParcelas();
-            foreach(var parcela in parcelas)
-            {
-                if(parcela.CompraParceladaId == compra.CompraParceladaId && parcela.Processada == false)
-                {
-                    await _parcelaRepo.DeletedParcela(parcela);
-                    compra.Cancelada = true;
-                }
-            }
-            await _compraRepo.SaveChangesAsync(compra);
-            return compra;
         }
 
         public CompraParcelada VerificarCategoria(CompraParcelada compra)
