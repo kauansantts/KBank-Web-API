@@ -22,7 +22,7 @@ namespace KBank_Web_API.Service
         public async Task<(IEnumerable<Transacao> transacoes, IEnumerable<Parcela> parcelas)> ProcessarParcelas(ApplicationUser user)
         {
             var dataAtual = DateTime.Now;
-            var parcelas = await _parcelaRepo.GetParcelas();
+            var parcelas = await _parcelaRepo.GetParcelas(user);
             List<Parcela> ListParcelasProcessadas = new List<Parcela>();
             List<Transacao> ListTransacaoGeradas = new List<Transacao>();
 
@@ -61,7 +61,7 @@ namespace KBank_Web_API.Service
         public async Task<Parcela> ProcessarParcelasId(int id, ApplicationUser user)
         {
             
-            var parcela = await _parcelaRepo.GetParcela(id);
+            var parcela = await _parcelaRepo.GetParcela(id, user);
             if(parcela is null)
             {
                 throw new ArgumentNullException();

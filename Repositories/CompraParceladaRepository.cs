@@ -30,7 +30,7 @@ namespace KBank_Web_API.Repositories
 
         public async Task<IEnumerable<CompraParcelada>> GetComprasAsync(ApplicationUser user)
         {
-            var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).Where(c => c.UsuarioId == user.Id).ToListAsync();   
+            var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).Where(c => c.UsuarioId == user.Id).ToListAsync() ?? throw new ArgumentNullException("Usuario nao possui compras parceladas!");   
             return compras; 
         }
 
@@ -38,7 +38,7 @@ namespace KBank_Web_API.Repositories
         {
             if(compraParcelada is null)
             {
-                throw new ArgumentNullException(nameof(compraParcelada));
+                throw new ArgumentNullException("Parametros invalidos, revise!");
             }
 
             compraParcelada.GerarParcelas();

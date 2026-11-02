@@ -76,7 +76,7 @@ namespace KBank_Web_API.Controllers
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?. Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return BadRequest("Usuario não encontrado!");
+            if (usuario is null) return NotFound("Usuario não encontrado!");
 
             var transacao = _mapper.Map<Transacao>(transacaoRequestDTO);
             transacao.UsuarioId = usuario.Id;

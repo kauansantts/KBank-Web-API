@@ -12,9 +12,9 @@ namespace KBank_Web_API.Validations
             }
 
             int valor = (int)value;
-            if (valor < 2)
+            if (valor < 1)
             {
-                return new ValidationResult("Minimo de duas parcela!");
+                return new ValidationResult("Minimo de uma parcela!");
             }
 
             return ValidationResult.Success;

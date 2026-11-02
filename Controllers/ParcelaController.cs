@@ -33,24 +33,41 @@ namespace KBank_Web_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ParcelaResponseDTO>> GetParcela(int id)
         {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+            
             try
             {
-                var parcela = await _repository.GetParcela(id);
+                var parcela = await _repository.GetParcela(id, usuario);
                 var parcelaDto = _mapper.Map<ParcelaResponseDTO>(parcela);
                 return Ok(parcelaDto);
             }
-            catch
+            catch(ArgumentNullException ex)
             {
-                return NotFound("ID invalido!");
+                return NotFound(ex.Message);
+            }catch(InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }           
         }
 
         [HttpGet("/Parcelas")]
         public async Task<ActionResult<IEnumerable<ParcelaResponseDTO>>> GetParcelas()
         {
-            var parcelas = await _repository.GetParcelas();
-            var parcelasDto = _mapper.Map<IEnumerable<ParcelaResponseDTO>>(parcelas);
-            return Ok(parcelasDto);
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
+            try
+            {
+                var parcelas = await _repository.GetParcelas(usuario);
+                var parcelasDto = _mapper.Map<IEnumerable<ParcelaResponseDTO>>(parcelas);
+                return Ok(parcelasDto);
+            }catch(ArgumentNullException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 

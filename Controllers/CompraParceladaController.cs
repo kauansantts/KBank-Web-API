@@ -36,7 +36,7 @@ namespace KBank_Web_API.Controllers
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return BadRequest("Usuario não encontrado!");
+            if (usuario is null) return NotFound("Usuario não encontrado!");
             
             try
             {
@@ -59,20 +59,27 @@ namespace KBank_Web_API.Controllers
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return BadRequest("Usuario não encontrado!");
+            if (usuario is null) return NotFound("Usuario não encontrado!");
 
-            var compras = await _compra.GetComprasAsync(usuario);
-            var comprasDTO = _mapper.Map<IEnumerable<CompraParceladaResponseDTO>>(compras);
-            return Ok(comprasDTO);
+            try
+            {
+                var compras = await _compra.GetComprasAsync(usuario);
+                var comprasDTO = _mapper.Map<IEnumerable<CompraParceladaResponseDTO>>(compras);
+                return Ok(comprasDTO);
+            }
+            catch(Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult<CompraParceladaResponseDTO>> CreatedPersonalizado([FromBody] CompraParceladaRequestDTO compraParceladaDto)
+        public async Task<ActionResult<CompraParceladaResponseDTO>> Created([FromBody] CompraParceladaRequestDTO compraParceladaDto)
         {
             var compraParcelada = _mapper.Map<CompraParcelada>(compraParceladaDto);
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return BadRequest("Usuario não encontrado!");
+            if (usuario is null) return NotFound("Usuario não encontrado!");
 
             try
             {
@@ -89,6 +96,9 @@ namespace KBank_Web_API.Controllers
                 var compraP = await _compra.CreatedAsync(compraParcelada);
                 var compraDTO = _mapper.Map<CompraParceladaResponseDTO>(compraP);
                 return StatusCode(201, compraDTO);
+            }catch(ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch
             {
@@ -101,7 +111,8 @@ namespace KBank_Web_API.Controllers
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return BadRequest("Usuario não encontrado!");
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
             try
             {
                 var compraDeletada = await _compraService.CancelarCompraParcelada(id, usuario);
