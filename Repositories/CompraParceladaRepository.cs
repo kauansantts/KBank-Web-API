@@ -15,22 +15,23 @@ namespace KBank_Web_API.Repositories
 
         public async Task<CompraParcelada> GetCompraAsync(int id, ApplicationUser user)
         {
-            var compra =  await _context.ComprasParceladas.Include(p => p.Parcelas).FirstOrDefaultAsync(c => c.CompraParceladaId == id) ?? throw new ArgumentNullException();
-            var listCompraUser = user.ComprasParceladas.ToList();
+            var compra =  await _context.ComprasParceladas.Where(u => u.UsuarioId == user.Id).Include(p => p.Parcelas).FirstOrDefaultAsync(c => c.CompraParceladaId == id) ?? throw new InvalidOperationException($"Este ID de compra nao pertence ao usuario{user.UserName}");
+            return compra;
+            //var listCompraUser = user.ComprasParceladas.ToList();
 
-            foreach(var c in listCompraUser)
-            {
-                if(c == compra)
-                {
-                    return compra;
-                }
-            }
-            throw new InvalidOperationException($"Este ID de compra nao pertence ao usuario{user.UserName}");
+            //foreach(var c in listCompraUser)
+            //{
+            //    if(c == compra)
+            //    {
+            //        return compra;
+            //    }
+            //}
+            //throw new InvalidOperationException($"Este ID de compra nao pertence ao usuario{user.UserName}");
         }
 
         public async Task<IEnumerable<CompraParcelada>> GetComprasAsync(ApplicationUser user)
         {
-            var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).Where(c => c.UsuarioId == user.Id).ToListAsync() ?? throw new ArgumentNullException("Usuario nao possui compras parceladas!");   
+            var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).Where(c => c.UsuarioId == user.Id).ToListAsync();
             return compras; 
         }
 

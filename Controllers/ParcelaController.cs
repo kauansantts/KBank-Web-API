@@ -63,19 +63,10 @@ namespace KBank_Web_API.Controllers
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
             if (usuario is null) return NotFound("Usuario não encontrado!");
 
-            try
-            {
-                var parcelas = await _repository.GetParcelas(usuario);
-                var parcelasDto = _mapper.Map<IEnumerable<ParcelaResponseDTO>>(parcelas);
-                return Ok(parcelasDto);
-            }catch(ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch
-            {
-                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
-            }
+
+            var parcelas = await _repository.GetParcelas(usuario);
+            var parcelasDto = _mapper.Map<IEnumerable<ParcelaResponseDTO>>(parcelas);
+            return Ok(parcelasDto);
         }
 
 

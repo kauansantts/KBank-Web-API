@@ -61,16 +61,9 @@ namespace KBank_Web_API.Controllers
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
             if (usuario is null) return NotFound("Usuario não encontrado!");
 
-            try
-            {
-                var compras = await _compra.GetComprasAsync(usuario);
-                var comprasDTO = _mapper.Map<IEnumerable<CompraParceladaResponseDTO>>(compras);
-                return Ok(comprasDTO);
-            }
-            catch(Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
+            var compras = await _compra.GetComprasAsync(usuario);
+            var comprasDTO = _mapper.Map<IEnumerable<CompraParceladaResponseDTO>>(compras);
+            return Ok(comprasDTO);
         }
 
         [HttpPost]
@@ -106,6 +99,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
+        
         [HttpDelete]
         public async Task<ActionResult<CompraParceladaResponseDTO>> Deleted(int id)
         {

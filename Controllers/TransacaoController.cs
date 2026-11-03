@@ -115,7 +115,7 @@ namespace KBank_Web_API.Controllers
             }    
         }
 
-        //olhar como vai ficar o saldo do usuario apos essas manipulações de cancelamento em todos endpoints, talvez definir alguma regra
+        //ver melhor como fica essa questao de "estorno" pois parcelas que ja venceram nao tem como cancelar, porque transacao que ja foi feita tem como?
         [HttpDelete("{id}")]
         public async Task<ActionResult<TransacaoResponseDTO>> CancelarTransacao(int id)
         {

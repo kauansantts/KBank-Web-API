@@ -27,6 +27,15 @@ namespace KBank_Web_API.Service
                     throw new OperationCanceledException("Não é possivel cancelar uma transação parcelada, apenas cancelar a parcela!\nVá no endpoint de compra parcelada, e cancele a compra!");
                 }
 
+                var novoSaldo = transacao.ValorTransacao;
+                if(transacao.TipoTransacao == TipoEnum.Despesa)
+                {
+                    user.SaldoUser += novoSaldo;
+                }else if(transacao.TipoTransacao == TipoEnum.Receita)
+                {
+                    user.SaldoUser -= novoSaldo;
+                }
+
                 transacao.Cancelada = true;
                 await _transacaoRepo.UpdateAsync(transacao);
                 return transacao;

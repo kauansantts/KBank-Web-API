@@ -15,11 +15,7 @@ public class TransacaoRepository : ITransacaoRepository
 
     public async Task<Transacao> GetTransacaoAsync(int id, ApplicationUser user)
     {
-        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).FirstOrDefaultAsync(t => t.TransacaoId == id);
-        if(transacao is null)
-        {
-            throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
-        }
+        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).FirstOrDefaultAsync(t => t.TransacaoId == id) ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
 
         return transacao;
     }
