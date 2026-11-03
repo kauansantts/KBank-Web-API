@@ -48,8 +48,12 @@ namespace KBank_Web_API.Controllers
                 return NotFound(ex.Message);
             }catch(InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
-            }           
+                return NotFound(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+            }
         }
 
         [HttpGet("/Parcelas")]
@@ -68,6 +72,10 @@ namespace KBank_Web_API.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch
+            {
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+            }
         }
 
 
@@ -77,7 +85,7 @@ namespace KBank_Web_API.Controllers
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return BadRequest("Usuario não encontrado!");
+            if (usuario is null) return NotFound("Usuario não encontrado!");
 
             try
             {
@@ -90,9 +98,9 @@ namespace KBank_Web_API.Controllers
                 var processamentoDto = _mapper.Map<IEnumerable<ParcelaCompraResponseDTO>>(parcelasProcessadas);
                 return Ok(processamentoDto);
             }
-            catch
+            catch(Exception ex)
             {
-                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
+                return BadRequest($"Algo inesperado aconteceu, verifique com o ADM\n{ex.Message}");
             }
         }
 
@@ -102,7 +110,7 @@ namespace KBank_Web_API.Controllers
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return BadRequest("Usuario não encontrado!");
+            if (usuario is null) return NotFound("Usuario não encontrado!");
             
             try
             {
@@ -112,11 +120,11 @@ namespace KBank_Web_API.Controllers
             }
             catch(InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch
             {
-                return NotFound("ID invalido!");
+                return BadRequest("Algo inesperado aconteceu, verifique com o ADM");
             }
         }
     }

@@ -4,8 +4,8 @@ namespace KBank_Web_API.Repositories;
 
 public interface ITransacaoRepository
 {
-    public Task<IEnumerable<Transacao>> GetTransacoesAsync();
-    public Task<Transacao> GetTransacaoAsync(int id);
+    public Task<IEnumerable<Transacao>> GetTransacoesAsync(ApplicationUser user);
+    public Task<Transacao> GetTransacaoAsync(int id, ApplicationUser user);
     public Task<Transacao> CreatedAsync(Transacao transacao);
     public Task SaveTransacaoAsync(Transacao transacao);
     public Task UpdateAsync(Transacao transacao);

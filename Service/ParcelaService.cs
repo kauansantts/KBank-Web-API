@@ -60,34 +60,38 @@ namespace KBank_Web_API.Service
 
         public async Task<Parcela> ProcessarParcelasId(int id, ApplicationUser user)
         {
-            
-            var parcela = await _parcelaRepo.GetParcela(id, user);
-            if(parcela is null)
+            try
             {
-                throw new ArgumentNullException();
+                var parcela = await _parcelaRepo.GetParcela(id, user);
+
+
+                var transacao = new Transacao()
+                {
+                    DataTransacao = parcela.DataParcela,
+                    Identificador = IdentificadorEnum.CompraParcelada,
+                    CategoriaTransacao = parcela.CategoriaParcela,
+                    Descricao = parcela.Descricao,
+                    ValorTransacao = parcela.ValorParcela,
+                    ParcelaId = parcela.ParcelaId,
+                    TipoTransacao = parcela.TipoParcela,
+                    UsuarioId = user.Id
+                };
+                var SaveSaldoUser = await AtualizarSaldoUsuario(transacao.ValorTransacao, transacao.TipoTransacao, user);
+                if (SaveSaldoUser is false)
+                {
+                    throw new InvalidOperationException("Falha ao salvar alterações no banco!");
+                }
+                await _transacaoRepo.SaveTransacaoAsync(transacao);
+                parcela.Processada = true;
+                await _parcelaRepo.SaveChangesAsync(parcela);
+
+                return parcela;
+            }
+            catch(Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
 
-            var transacao = new Transacao()
-            {
-                DataTransacao = parcela.DataParcela,
-                Identificador = IdentificadorEnum.CompraParcelada,
-                CategoriaTransacao = parcela.CategoriaParcela,
-                Descricao = parcela.Descricao,
-                ValorTransacao = parcela.ValorParcela,
-                ParcelaId = parcela.ParcelaId,
-                TipoTransacao = parcela.TipoParcela,
-                UsuarioId = user.Id
-            };
-            var SaveSaldoUser = await AtualizarSaldoUsuario(transacao.ValorTransacao, transacao.TipoTransacao, user);
-            if(SaveSaldoUser is false)
-            {
-                throw new InvalidOperationException("Falha ao salvar alterações no banco!");
-            }
-            await _transacaoRepo.SaveTransacaoAsync(transacao);
-            parcela.Processada = true;
-            await _parcelaRepo.SaveChangesAsync(parcela);
-
-            return parcela;
         }
 
         public async Task<bool> AtualizarSaldoUsuario(double saldoParcela, TipoEnum tipo, ApplicationUser user)

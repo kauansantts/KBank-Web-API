@@ -98,7 +98,7 @@ namespace KBank_Web_API.Controllers
                 return StatusCode(201, compraDTO);
             }catch(ArgumentNullException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch
             {

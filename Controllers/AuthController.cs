@@ -100,7 +100,8 @@ namespace KBank_Web_API.Controllers
                 message = "Usuario criado com sucesso!",
                 Id = user.Id,
                 Nome = user.UserName,
-                Email = user.Email
+                Email = user.Email,
+                Saldo = user.SaldoUser.ToString("F2")
             });
         }
 

@@ -17,28 +17,30 @@ namespace KBank_Web_API.Service
         }
 
 
-        public async Task<Transacao> CancelarTransacao(int id)
+        public async Task<Transacao> CancelarTransacao(int id, ApplicationUser user)
         {
-            var transacao = await _transacaoRepo.GetTransacaoAsync(id);
-            if(transacao is null)
+            try
             {
-                throw new ArgumentNullException("ID invalido");
+                var transacao = await _transacaoRepo.GetTransacaoAsync(id, user);
+                if(transacao.Identificador == IdentificadorEnum.CompraParcelada)
+                {
+                    throw new OperationCanceledException("Não é possivel cancelar uma transação parcelada, apenas cancelar a parcela!\nVá no endpoint de compra parcelada, e cancele a compra!");
+                }
+
+                transacao.Cancelada = true;
+                await _transacaoRepo.UpdateAsync(transacao);
+                return transacao;
+            }catch(Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
 
-            if(transacao.Identificador == IdentificadorEnum.CompraParcelada)
-            {
-                throw new OperationCanceledException("Não é possivel cancelar uma transação parcelada\nApenas cancelar a parcela!");
-            }
-
-            transacao.Cancelada = true;
-            await _transacaoRepo.UpdateAsync(transacao);
-            return transacao;
         }
 
-        public async Task<IEnumerable<Transacao>> GetTransacaoData(DateTime dataInicial, DateTime dataFinal)
+        public async Task<IEnumerable<Transacao>> GetTransacaoData(DateTime dataInicial, DateTime dataFinal, ApplicationUser user)
         {
             var ListTransacoes = new List<Transacao>();
-            var transacoes = await _transacaoRepo.GetTransacoesAsync();
+            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
             foreach (var transacao in transacoes)
             {
                 if(transacao.DataTransacao >= dataInicial && transacao.DataTransacao <= dataFinal)

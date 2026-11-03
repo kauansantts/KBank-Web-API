@@ -13,20 +13,20 @@ public class TransacaoRepository : ITransacaoRepository
         _context = context;
     }
 
-    public async Task<Transacao> GetTransacaoAsync(int id)
+    public async Task<Transacao> GetTransacaoAsync(int id, ApplicationUser user)
     {
-        var transacao = await _context.Transacoes.FirstOrDefaultAsync(t => t.TransacaoId == id);
+        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).FirstOrDefaultAsync(t => t.TransacaoId == id);
         if(transacao is null)
         {
-            throw new ArgumentNullException();
+            throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
         }
 
         return transacao;
     }
 
-    public async Task<IEnumerable<Transacao>> GetTransacoesAsync()
+    public async Task<IEnumerable<Transacao>> GetTransacoesAsync(ApplicationUser user)
     {
-        return await _context.Transacoes.ToListAsync();
+       return await _context.Transacoes.Where(c => c.UsuarioId == user.Id).ToListAsync();
     }
 
     public async Task<Transacao> CreatedAsync(Transacao transacao)

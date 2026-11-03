@@ -34,22 +34,31 @@ namespace KBank_Web_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TransacaoResponseDTO>> GetTransacao(int id)
         {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+            
             try
             {
-                var transacao = await _repository.GetTransacaoAsync(id);
+                var transacao = await _repository.GetTransacaoAsync(id, usuario);
                 var transacaoDto = _mapper.Map<TransacaoResponseDTO>(transacao);
                 return Ok(transacaoDto);
             }
-            catch
+            catch(InvalidOperationException ex)
             {
-                return NotFound("ID invalido!");
+                return NotFound(ex.Message);
             }
         }
 
         [HttpGet("/Transações")]
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetTransacoes()
         {
-            var transacoes = await _repository.GetTransacoesAsync();
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+            
+
+            var transacoes = await _repository.GetTransacoesAsync(usuario);
             var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
 
             return Ok(transacoesDto);
@@ -59,15 +68,22 @@ namespace KBank_Web_API.Controllers
         [HttpGet("/Transações-por-data")]//passagem de parametros = 2026-01-20
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetTransacoesData([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
         {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
             try
             {
-                var transacoes = await _transacaoService.GetTransacaoData(dataInicial, dataFinal);
+                var transacoes = await _transacaoService.GetTransacaoData(dataInicial, dataFinal, usuario);
                 var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
                 return Ok(transacoesDto);
             }
             catch(ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
             }
         }
 
@@ -99,21 +115,27 @@ namespace KBank_Web_API.Controllers
             }    
         }
 
-        [HttpDelete]
+        //olhar como vai ficar o saldo do usuario apos essas manipulações de cancelamento em todos endpoints, talvez definir alguma regra
+        [HttpDelete("{id}")]
         public async Task<ActionResult<TransacaoResponseDTO>> CancelarTransacao(int id)
         {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+            
             try
             {
-                var transacaoDeletada = await _transacaoService.CancelarTransacao(id);
+                var transacaoDeletada = await _transacaoService.CancelarTransacao(id, usuario);
                 var transacaoDeletadaDto = _mapper.Map<TransacaoResponseDTO>(transacaoDeletada);
                 return Ok(transacaoDeletadaDto);
             }
-            catch(ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }catch(OperationCanceledException ex)
+            catch(OperationCanceledException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
             }
         }
     }

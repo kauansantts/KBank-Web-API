@@ -17,16 +17,17 @@ namespace KBank_Web_API.Repositories
 
         public async Task<Parcela> GetParcela(int id, ApplicationUser user)
         {
-            var parcela = await _context.Parcelas.FirstOrDefaultAsync(p => p.ParcelaId == id) ?? throw new ArgumentNullException("Id de parcela invalido!");
-            var listComprasUser = user.ComprasParceladas.ToList();
-            foreach(var compra in listComprasUser)
-            {
-                if(compra.CompraParceladaId == parcela.CompraParceladaId)
-                {
-                    return parcela;
-                }
-            }
-            throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuario {user.UserName}!");
+            var parcela = await _context.Parcelas.Where(c => c.compraParcelada.UsuarioId == user.Id).FirstOrDefaultAsync(p => p.ParcelaId == id) ?? throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuario {user.UserName}!");
+            return parcela;
+            //var listComprasUser = user.ComprasParceladas.ToList();
+            //foreach(var compra in listComprasUser)
+            //{
+            //    if(compra.CompraParceladaId == parcela.CompraParceladaId)
+            //    {
+            //        return parcela;
+            //    }
+            //}
+            //throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuario {user.UserName}!");
         }
 
         public async Task<IEnumerable<Parcela>> GetParcelas(ApplicationUser user)
