@@ -8,6 +8,8 @@ namespace KBank_Web_API.DTOs.Request
 {
     public class TransacaoRequestDTO
     {
+        [Required(ErrorMessage = "Data da transacao é obrigatorio")]
+        public DateTime DataTransacao { get; set; }
         [Required(ErrorMessage = "Tipo da transacao é obrigatorio")]
         public TipoEnum TipoTransacao { get; set; }
         [Required(ErrorMessage = "Categoria da transacao é obrigatorio")]

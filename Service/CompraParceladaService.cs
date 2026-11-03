@@ -55,7 +55,7 @@ namespace KBank_Web_API.Service
         {
             if (compra.CategoriaParcela == CategoriaEnum.fixa)
             {
-                throw new ArgumentNullException();
+                throw new InvalidOperationException();
             }
             return compra;
         }

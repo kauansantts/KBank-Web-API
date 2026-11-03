@@ -33,7 +33,7 @@ public class TransacaoRepository : ITransacaoRepository
         }
 
         _context.Transacoes.Add(transacao);
-        await _context.SaveChangesAsync();//esta dando erro aqui dbcontextUpdate
+        await _context.SaveChangesAsync();
         return transacao;
     }
 

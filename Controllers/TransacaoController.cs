@@ -2,6 +2,7 @@
 using KBank_Web_API.DTOs.Request;
 using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
+using KBank_Web_API.Models.Enums;
 using KBank_Web_API.Repositories;
 using KBank_Web_API.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -65,8 +66,8 @@ namespace KBank_Web_API.Controllers
         }
 
 
-        [HttpGet("/Transações-por-data")]//passagem de parametros = 2026-01-20
-        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetTransacoesData([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
+        [HttpGet("/Por-data")]//passagem de parametros = 2026-01-20
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorData([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
@@ -82,6 +83,143 @@ namespace KBank_Web_API.Controllers
             {
                 return BadRequest(ex.Message);
             }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("/Por-Maior-Menor")]
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorOrdem([FromQuery] double valorInicial, [FromQuery] double valorFinal)
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
+            try
+            {
+                var transacoes = await _transacaoService.GetPorOrdem(valorInicial, valorFinal, usuario);
+                var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
+                return Ok(transacoesDto);
+            }
+            catch(ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("/Por-compraParceladaId/{id}")]//id da compra parcelada
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorCompraParcelada(int id)
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
+            try
+            {
+                var transacoes = await _transacaoService.GetTransacaoCompra(id, usuario);
+                var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
+                return Ok(transacoesDto);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("/Por-ParcelaId/{id}")]//id da parcela
+        public async Task<ActionResult<TransacaoResponseDTO>> GetPorParcelaId(int id)
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
+            try
+            {
+                var transacoes = await _transacaoService.GetTransacaoParcela(id, usuario);
+                var transacoesDto = _mapper.Map<TransacaoResponseDTO>(transacoes);
+                return Ok(transacoesDto);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("/Por-Tipo")]
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorTipoEnum([FromQuery] TipoEnum tipo)
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
+            try
+            {
+                var transacoes = await _transacaoService.GetTipoEnum(tipo, usuario);
+                var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
+                return Ok(transacoesDto);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("/Por-Categoria")]
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorCategoriaEnum([FromQuery] CategoriaEnum categoria)
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
+            try
+            {
+                var transacoes = await _transacaoService.GetCategoriaEnum(categoria, usuario);
+                var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
+                return Ok(transacoesDto);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("/Por-Identificador")]
+        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorIdentificadorEnum([FromQuery] IdentificadorEnum identificador)
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
+
+            try
+            {
+                var transacoes = await _transacaoService.GetIdentificadorEnum(identificador, usuario);
+                var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
+                return Ok(transacoesDto);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return NotFound(ex.Message);
             }
