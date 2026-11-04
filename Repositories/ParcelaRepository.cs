@@ -55,6 +55,12 @@ namespace KBank_Web_API.Repositories
             ////return parcelasRetornadas;
 
         }
+        public async Task<IEnumerable<Parcela>> GetParcelasVencidas(ApplicationUser user)
+        {
+            var dataAtual = DateTime.UtcNow;
+            var parcelas = await _context.Parcelas.Where(p => p.compraParcelada.UsuarioId == user.Id).Where(p => p.DataParcela < dataAtual && p.Processada == false).ToListAsync();
+            return parcelas;
+        }
 
         public async Task<Parcela> DeletedParcela(Parcela parcela)
         {

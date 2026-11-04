@@ -69,7 +69,18 @@ namespace KBank_Web_API.Controllers
             return Ok(parcelasDto);
         }
 
+        [HttpGet("/Parcelas-vencidas")]
+        public async Task<ActionResult<IEnumerable<ParcelaCompraResponseDTO>>> GetParcelasVencidas()
+        {
+            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var usuario = await _userManager.FindByIdAsync(usuarioId!);
+            if (usuario is null) return NotFound("Usuario não encontrado!");
 
+            var parcelas = await _repository.GetParcelasVencidas(usuario);
+            if (parcelas is null) return NotFound("Você não possui parcelas vencidas!");
+            var parcelasDto = _mapper.Map<IEnumerable<ParcelaResponseDTO>>(parcelas);
+            return Ok(parcelasDto);
+        }
 
         [HttpPost("/Processar-parcelas")]
         public async Task<ActionResult<IEnumerable<ParcelaCompraResponseDTO>>> GerarTransacoesParceladas()

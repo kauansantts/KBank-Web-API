@@ -1,5 +1,6 @@
 ﻿using KBank_Web_API.Infra;
 using KBank_Web_API.Models;
+using KBank_Web_API.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace KBank_Web_API.Repositories;
@@ -24,6 +25,34 @@ public class TransacaoRepository : ITransacaoRepository
     {
        return await _context.Transacoes.Where(c => c.UsuarioId == user.Id).ToListAsync();
     }
+
+
+    public async Task<Transacao> GetTransacaoParcelaIdAsync(ApplicationUser user, int id)
+    {
+        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).FirstOrDefaultAsync(c => c.ParcelaId == id) ?? throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuário {user.UserName}!");
+        return transacao;
+    }
+
+    public async Task<IEnumerable<Transacao>> GetTipoEnum(TipoEnum tipo, ApplicationUser user)
+    {
+        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).Where(c => c.TipoTransacao == tipo).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
+        return transacao;
+
+    }
+
+    public async Task<IEnumerable<Transacao>> GetCategoriaEnum(CategoriaEnum categoria, ApplicationUser user)
+    {
+        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).Where(c => c.CategoriaTransacao == categoria).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
+        return transacao;
+    }
+
+    public async Task<IEnumerable<Transacao>> GetIdentificadorEnum(IdentificadorEnum identificador, ApplicationUser user)
+    {
+        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).Where(c => c.Identificador == identificador).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
+        return transacao;
+
+    }
+
 
     public async Task<Transacao> CreatedAsync(Transacao transacao)
     {
@@ -60,4 +89,5 @@ public class TransacaoRepository : ITransacaoRepository
         _context.Update(transacao);
         await _context.SaveChangesAsync();
     }
+
 }

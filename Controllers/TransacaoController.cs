@@ -88,7 +88,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Por-Maior-Menor")]
+        [HttpGet("/Por-Maior-Menor")]//testar
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorOrdem([FromQuery] double valorInicial, [FromQuery] double valorFinal)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -110,29 +110,6 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Por-compraParceladaId/{id}")]//id da compra parcelada
-        public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorCompraParcelada(int id)
-        {
-            var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var usuario = await _userManager.FindByIdAsync(usuarioId!);
-            if (usuario is null) return NotFound("Usuario não encontrado!");
-
-            try
-            {
-                var transacoes = await _transacaoService.GetTransacaoCompra(id, usuario);
-                var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
-                return Ok(transacoesDto);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
         [HttpGet("/Por-ParcelaId/{id}")]//id da parcela
         public async Task<ActionResult<TransacaoResponseDTO>> GetPorParcelaId(int id)
         {
@@ -142,17 +119,17 @@ namespace KBank_Web_API.Controllers
 
             try
             {
-                var transacoes = await _transacaoService.GetTransacaoParcela(id, usuario);
+                var transacoes = await _repository.GetTransacaoParcelaIdAsync(usuario, id);
                 var transacoesDto = _mapper.Map<TransacaoResponseDTO>(transacoes);
                 return Ok(transacoesDto);
             }
             catch (ArgumentNullException ex)
             {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
                 return NotFound(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Algo de errado aconteceu, verifique com o ADM!");
             }
         }
 
@@ -165,7 +142,7 @@ namespace KBank_Web_API.Controllers
 
             try
             {
-                var transacoes = await _transacaoService.GetTipoEnum(tipo, usuario);
+                var transacoes = await _repository.GetTipoEnum(tipo, usuario);
                 var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
                 return Ok(transacoesDto);
             }
@@ -188,7 +165,7 @@ namespace KBank_Web_API.Controllers
 
             try
             {
-                var transacoes = await _transacaoService.GetCategoriaEnum(categoria, usuario);
+                var transacoes = await _repository.GetCategoriaEnum(categoria, usuario);
                 var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
                 return Ok(transacoesDto);
             }
@@ -211,7 +188,7 @@ namespace KBank_Web_API.Controllers
 
             try
             {
-                var transacoes = await _transacaoService.GetIdentificadorEnum(identificador, usuario);
+                var transacoes = await _repository.GetIdentificadorEnum(identificador, usuario);
                 var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
                 return Ok(transacoesDto);
             }

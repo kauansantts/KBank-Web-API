@@ -85,40 +85,28 @@ namespace KBank_Web_API.Service
 
         }
 
-        public async Task<IEnumerable<Transacao>> GetTransacaoCompra(int id, ApplicationUser user)
-        {
-            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
-            var transacaoCompra = transacoes.Where(c => c.Parcela!.CompraParceladaId == id);
-            return transacaoCompra;
-        }
 
-        public async Task<IEnumerable<Transacao>> GetTipoEnum(TipoEnum tipo, ApplicationUser user)
-        {
-            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
-            var transacaoCompra = transacoes.Where(c => c.TipoTransacao == tipo);
-            return transacaoCompra;
-        }
+        //public async Task<IEnumerable<Transacao>> GetTipoEnum(TipoEnum tipo, ApplicationUser user)
+        //{
+        //    var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
+        //    var transacaoCompra = transacoes.Where(c => c.TipoTransacao == tipo);
+        //    return transacaoCompra;
+        //}
 
-        public async Task<IEnumerable<Transacao>> GetCategoriaEnum(CategoriaEnum categoria, ApplicationUser user)
-        {
-            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
-            var transacaoCompra = transacoes.Where(c => c.CategoriaTransacao == categoria);
-            return transacaoCompra;
-        }
+        //public async Task<IEnumerable<Transacao>> GetCategoriaEnum(CategoriaEnum categoria, ApplicationUser user)
+        //{
+        //    var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
+        //    var transacaoCompra = transacoes.Where(c => c.CategoriaTransacao == categoria);
+        //    return transacaoCompra;
+        //}
 
-        public async Task<IEnumerable<Transacao>> GetIdentificadorEnum(IdentificadorEnum identificador, ApplicationUser user)
-        {
-            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
-            var transacaoCompra = transacoes.Where(c => c.Identificador == identificador);
-            return transacaoCompra;
-        }
+        //public async Task<IEnumerable<Transacao>> GetIdentificadorEnum(IdentificadorEnum identificador, ApplicationUser user)
+        //{
+        //    var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
+        //    var transacaoCompra = transacoes.Where(c => c.Identificador == identificador);
+        //    return transacaoCompra;
+        //}
 
-        public async Task<Transacao> GetTransacaoParcela(int id, ApplicationUser user)
-        {
-            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
-            var transacaoCompra = transacoes.FirstOrDefault(c => c.Parcela!.ParcelaId == id);
-            return transacaoCompra!;
-        }
 
         public async Task<IEnumerable<Transacao>> GetPorOrdem(double valorInicial, double valorFinal, ApplicationUser user)
         {
