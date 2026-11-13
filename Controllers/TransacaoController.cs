@@ -41,7 +41,7 @@ namespace KBank_Web_API.Controllers
             
             try
             {
-                var transacao = await _repository.GetTransacaoAsync(id, usuario);
+                var transacao = await _repository.GetTransacaoNoTrackingAsync(id, usuario);
                 var transacaoDto = _mapper.Map<TransacaoResponseDTO>(transacao);
                 return Ok(transacaoDto);
             }
@@ -59,7 +59,7 @@ namespace KBank_Web_API.Controllers
             if (usuario is null) return NotFound("Usuario não encontrado!");
             
 
-            var transacoes = await _repository.GetTransacoesAsync(usuario);
+            var transacoes = await _repository.GetTransacoesNoTrackingAsync(usuario);
             var transacoesDto = _mapper.Map<IEnumerable<TransacaoResponseDTO>>(transacoes);
 
             return Ok(transacoesDto);

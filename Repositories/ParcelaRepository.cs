@@ -30,6 +30,12 @@ namespace KBank_Web_API.Repositories
             //throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuario {user.UserName}!");
         }
 
+        public async Task<Parcela> GetParcelaNoTracking(int id, ApplicationUser user)
+        {
+            var parcela = await _context.Parcelas.AsNoTracking().Where(c => c.compraParcelada.UsuarioId == user.Id).FirstOrDefaultAsync(p => p.ParcelaId == id) ?? throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuario {user.UserName}!");
+            return parcela;
+        }
+
         public async Task<IEnumerable<Parcela>> GetParcelas(ApplicationUser user)
         {
             //varias formas que achei de fazer, deixei a melhor opção rodando!
@@ -55,10 +61,16 @@ namespace KBank_Web_API.Repositories
             ////return parcelasRetornadas;
 
         }
+
+        public async Task<IEnumerable<Parcela>> GetParcelasNoTracking(ApplicationUser user)
+        {
+            var parcelas = await _context.Parcelas.AsNoTracking().Where(c => c.compraParcelada.UsuarioId == user.Id).ToListAsync();
+            return parcelas;
+        }
         public async Task<IEnumerable<Parcela>> GetParcelasVencidas(ApplicationUser user)
         {
             var dataAtual = DateTime.UtcNow;
-            var parcelas = await _context.Parcelas.Where(p => p.compraParcelada.UsuarioId == user.Id).Where(p => p.DataParcela < dataAtual && p.Processada == false).ToListAsync();
+            var parcelas = await _context.Parcelas.AsNoTracking().Where(p => p.compraParcelada.UsuarioId == user.Id).Where(p => p.DataParcela < dataAtual && p.Processada == false).ToListAsync();
             return parcelas;
         }
 

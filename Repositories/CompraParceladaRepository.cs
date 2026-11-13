@@ -29,10 +29,22 @@ namespace KBank_Web_API.Repositories
             //throw new InvalidOperationException($"Este ID de compra nao pertence ao usuario{user.UserName}");
         }
 
+        public async Task<CompraParcelada> GetCompraNoTrackingAsync(int id, ApplicationUser user)
+        {
+            var compra = await _context.ComprasParceladas.AsNoTracking().Where(u => u.UsuarioId == user.Id).Include(p => p.Parcelas).FirstOrDefaultAsync(c => c.CompraParceladaId == id) ?? throw new InvalidOperationException($"Este ID de compra nao pertence ao usuario{user.UserName}");
+            return compra;
+        }
+
         public async Task<IEnumerable<CompraParcelada>> GetComprasAsync(ApplicationUser user)
         {
             var compras = await _context.ComprasParceladas.Include(p => p.Parcelas).Where(c => c.UsuarioId == user.Id).ToListAsync();
             return compras; 
+        }
+
+        public async Task<IEnumerable<CompraParcelada>> GetComprasNoTrackingAsync(ApplicationUser user)
+        {
+            var compras = await _context.ComprasParceladas.AsNoTracking().Include(p => p.Parcelas).Where(c => c.UsuarioId == user.Id).ToListAsync();
+            return compras;
         }
 
         public async Task<CompraParcelada> CreatedAsync(CompraParcelada compraParcelada)

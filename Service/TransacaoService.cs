@@ -49,7 +49,7 @@ namespace KBank_Web_API.Service
         public async Task<IEnumerable<Transacao>> GetTransacaoData(DateTime dataInicial, DateTime dataFinal, ApplicationUser user)
         {
             var ListTransacoes = new List<Transacao>();
-            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
+            var transacoes = await _transacaoRepo.GetTransacoesNoTrackingAsync(user);
             foreach (var transacao in transacoes)
             {
                 if(transacao.DataTransacao >= dataInicial && transacao.DataTransacao <= dataFinal)
@@ -111,7 +111,7 @@ namespace KBank_Web_API.Service
         public async Task<IEnumerable<Transacao>> GetPorOrdem(double valorInicial, double valorFinal, ApplicationUser user)
         {
             var ListTransacoes = new List<Transacao>();
-            var transacoes = await _transacaoRepo.GetTransacoesAsync(user);
+            var transacoes = await _transacaoRepo.GetTransacoesNoTrackingAsync(user);
             foreach (var transacao in transacoes)
             {
                 if (transacao.ValorTransacao >= valorInicial && transacao.ValorTransacao <= valorFinal)

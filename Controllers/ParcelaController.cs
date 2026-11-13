@@ -39,7 +39,7 @@ namespace KBank_Web_API.Controllers
             
             try
             {
-                var parcela = await _repository.GetParcela(id, usuario);
+                var parcela = await _repository.GetParcelaNoTracking(id, usuario);
                 var parcelaDto = _mapper.Map<ParcelaResponseDTO>(parcela);
                 return Ok(parcelaDto);
             }
@@ -64,7 +64,7 @@ namespace KBank_Web_API.Controllers
             if (usuario is null) return NotFound("Usuario não encontrado!");
 
 
-            var parcelas = await _repository.GetParcelas(usuario);
+            var parcelas = await _repository.GetParcelasNoTracking(usuario);
             var parcelasDto = _mapper.Map<IEnumerable<ParcelaResponseDTO>>(parcelas);
             return Ok(parcelasDto);
         }

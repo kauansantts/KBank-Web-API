@@ -6,7 +6,9 @@ namespace KBank_Web_API.Repositories;
 public interface ITransacaoRepository
 {
     public Task<IEnumerable<Transacao>> GetTransacoesAsync(ApplicationUser user);
+    public Task<IEnumerable<Transacao>> GetTransacoesNoTrackingAsync(ApplicationUser user);
     public Task<Transacao> GetTransacaoAsync(int id, ApplicationUser user);
+    public Task<Transacao> GetTransacaoNoTrackingAsync(int id, ApplicationUser user);
     public Task<Transacao> GetTransacaoParcelaIdAsync(ApplicationUser user, int id);
     public Task<IEnumerable<Transacao>> GetTipoEnum(TipoEnum tipo, ApplicationUser user);
     public Task<IEnumerable<Transacao>> GetCategoriaEnum(CategoriaEnum categoria, ApplicationUser user);

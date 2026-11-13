@@ -20,35 +20,46 @@ public class TransacaoRepository : ITransacaoRepository
 
         return transacao;
     }
+    
+    public async Task<Transacao> GetTransacaoNoTrackingAsync(int id, ApplicationUser user)
+    {
+        var transacao = await _context.Transacoes.AsNoTracking().Where(c => c.UsuarioId == user.Id).FirstOrDefaultAsync(t => t.TransacaoId == id) ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
+
+        return transacao;
+    }
 
     public async Task<IEnumerable<Transacao>> GetTransacoesAsync(ApplicationUser user)
     {
        return await _context.Transacoes.Where(c => c.UsuarioId == user.Id).ToListAsync();
     }
 
+    public async Task<IEnumerable<Transacao>> GetTransacoesNoTrackingAsync(ApplicationUser user)
+    {
+        return await _context.Transacoes.AsNoTracking().Where(c => c.UsuarioId == user.Id).ToListAsync();
+    }
 
     public async Task<Transacao> GetTransacaoParcelaIdAsync(ApplicationUser user, int id)
     {
-        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).FirstOrDefaultAsync(c => c.ParcelaId == id) ?? throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuário {user.UserName}!");
+        var transacao = await _context.Transacoes.AsNoTracking().Where(c => c.UsuarioId == user.Id).FirstOrDefaultAsync(c => c.ParcelaId == id) ?? throw new InvalidOperationException($"Este Id de parcela nao pertence ao usuário {user.UserName}!");
         return transacao;
     }
 
     public async Task<IEnumerable<Transacao>> GetTipoEnum(TipoEnum tipo, ApplicationUser user)
     {
-        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).Where(c => c.TipoTransacao == tipo).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
+        var transacao = await _context.Transacoes.AsNoTracking().Where(c => c.UsuarioId == user.Id).Where(c => c.TipoTransacao == tipo).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
         return transacao;
 
     }
 
     public async Task<IEnumerable<Transacao>> GetCategoriaEnum(CategoriaEnum categoria, ApplicationUser user)
     {
-        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).Where(c => c.CategoriaTransacao == categoria).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
+        var transacao = await _context.Transacoes.AsNoTracking().Where(c => c.UsuarioId == user.Id).Where(c => c.CategoriaTransacao == categoria).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
         return transacao;
     }
 
     public async Task<IEnumerable<Transacao>> GetIdentificadorEnum(IdentificadorEnum identificador, ApplicationUser user)
     {
-        var transacao = await _context.Transacoes.Where(c => c.UsuarioId == user.Id).Where(c => c.Identificador == identificador).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
+        var transacao = await _context.Transacoes.AsNoTracking().Where(c => c.UsuarioId == user.Id).Where(c => c.Identificador == identificador).ToListAsync() ?? throw new InvalidOperationException($"Este Id de transação nao pertence ao usuário {user.UserName}!");
         return transacao;
 
     }
@@ -89,5 +100,4 @@ public class TransacaoRepository : ITransacaoRepository
         _context.Update(transacao);
         await _context.SaveChangesAsync();
     }
-
 }

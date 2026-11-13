@@ -5,7 +5,9 @@ namespace KBank_Web_API.Repositories
     public interface ICompraParceladaRepository
     {
         Task<CompraParcelada> GetCompraAsync(int id, ApplicationUser user);
+        Task<CompraParcelada> GetCompraNoTrackingAsync(int id, ApplicationUser user);
         Task<IEnumerable<CompraParcelada>> GetComprasAsync(ApplicationUser user);
+        Task<IEnumerable<CompraParcelada>> GetComprasNoTrackingAsync(ApplicationUser user);
         Task<CompraParcelada> CreatedAsync( CompraParcelada compraParcelada );
         Task<CompraParcelada> DeletedAsync(CompraParcelada compraParcelada);
         Task<CompraParcelada> SaveChangesAsync (CompraParcelada compraParcelada );

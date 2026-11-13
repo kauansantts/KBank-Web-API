@@ -40,7 +40,7 @@ namespace KBank_Web_API.Controllers
             
             try
             {
-                var compra = await _compra.GetCompraAsync(id, usuario);
+                var compra = await _compra.GetCompraNoTrackingAsync(id, usuario);
                 var CompraDTO = _mapper.Map<CompraParceladaResponseDTO>(compra);
                 return Ok(CompraDTO);
             }
@@ -61,7 +61,7 @@ namespace KBank_Web_API.Controllers
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
             if (usuario is null) return NotFound("Usuario não encontrado!");
 
-            var compras = await _compra.GetComprasAsync(usuario);
+            var compras = await _compra.GetComprasNoTrackingAsync(usuario);
             var comprasDTO = _mapper.Map<IEnumerable<CompraParceladaResponseDTO>>(compras);
             return Ok(comprasDTO);
         }
