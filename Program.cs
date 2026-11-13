@@ -88,7 +88,12 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
     };
 });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdmOnly", policy => policy.RequireRole("adm"));
+
+    options.AddPolicy("SuperAdmOnly", policy => policy.RequireRole("SuperAdm"));
+});
 
 var app = builder.Build();
 

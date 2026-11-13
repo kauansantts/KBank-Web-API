@@ -3,9 +3,11 @@ using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
 using KBank_Web_API.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -90,10 +92,10 @@ namespace KBank_Web_API.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, request.Senha);
-            if (!result.Succeeded)
-            {
-                return BadRequest("Erro ao salvar alterações no banco\n" + result.Errors);
-            }
+            if (!result.Succeeded) return BadRequest("Erro ao salvar alterações no banco\n" + result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Usuario");
+            if (!roleResult.Succeeded) return BadRequest("falha ao adicionar role ao usuario!");
 
             return StatusCode(201, new
             {
@@ -147,7 +149,7 @@ namespace KBank_Web_API.Controllers
         }
 
         [HttpGet("/Dados-Usuário")]
-        public async Task<IActionResult> DadosUser()
+        public async Task<IActionResult> GetDadosUser()
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var usuario = await _userManager.FindByIdAsync(usuarioId!);
@@ -162,6 +164,42 @@ namespace KBank_Web_API.Controllers
             });
         }
 
+        [Authorize(Policy = "SuperAdmOnly")]
+        [HttpGet("/Todos-Usuarios")]
+        public async Task<IActionResult> GetUsuarios()
+        {
+            var usuarios = await _userManager.Users.ToListAsync();
+            return Ok(usuarios);
+        }
 
+        [Authorize(Policy = "SuperAdmOnly")]
+        [HttpPost("/Create-Role")]
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            var roleExist = await _roleManager.RoleExistsAsync(roleName);
+            if (roleExist) return BadRequest($"Role {roleName} ja existente!");
+
+            var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
+            if (!roleResult.Succeeded) return BadRequest($"Falha na criação da role {roleName}\n-{roleResult.Errors}");
+
+            return Ok($"Role {roleName} criada com sucesso!");
+        }
+
+        [Authorize(Policy = "SuperAdmOnly")]
+        [HttpPost("/AddToRole-User")]
+        public async Task<IActionResult> AddRoleUser(string userName, string roleName)
+        {
+            var user = await _userManager.FindByNameAsync(userName!);
+            if(user is null) return NotFound($"Usuario de nome {userName} não encontrado!");
+
+            var roles = await _roleManager.Roles.ToListAsync();
+            var queryRoles = roles.Any(r => r.ToString() == roleName);
+            if (!queryRoles) return NotFound($"Role de nome {roleName} não encontrado!");
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            if (!result.Succeeded) return BadRequest($"Falha ao adicionar a role {roleName} ao usuario {user.UserName}\n-{result.Errors}");
+
+            return Ok($"Role {roleName} adicionado ao usuario {user.UserName} com sucesso!");
+        }
     }
 }
