@@ -1,3 +1,5 @@
+using KBank_Web_API;
+using KBank_Web_API.Configs;
 using KBank_Web_API.DTOs;
 using KBank_Web_API.Infra;
 using KBank_Web_API.Models;
@@ -5,11 +7,14 @@ using KBank_Web_API.Repositories;
 using KBank_Web_API.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +100,36 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("SuperAdmOnly", policy => policy.RequireRole("SuperAdm"));
 });
 
+//CORS and rate limiting
+//CORS ainda não é nescessario pois ainda não possuo frontend react em outra origem, mas vou deixar o esqueleto ja pronto
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("frontEnd", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("meu front end quando tiver pronto");
+    });
+});
+
+var ratelimitoptions = new RateLimitOptions();
+builder.Configuration.GetSection("RateLimit").Bind(ratelimitoptions);
+
+builder.Services.AddRateLimiter(ratelimitOptions =>
+{
+    ratelimitOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    ratelimitOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpcontext =>
+        RateLimitPartition.GetFixedWindowLimiter(partitionKey: httpcontext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
+                                                                httpcontext.Connection.RemoteIpAddress!.ToString(),
+                                                 factory: partition => new FixedWindowRateLimiterOptions
+                                                 {
+                                                     AutoReplenishment = ratelimitoptions.AutoReplenishment,
+                                                     PermitLimit = ratelimitoptions.PermitLimit,
+                                                     QueueLimit = ratelimitoptions.QueueLimit,
+                                                     QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                                                     Window = TimeSpan.FromSeconds(ratelimitoptions.WindowSeconds)
+                                                 }));
+});
+
 var app = builder.Build();
 
 
@@ -108,6 +143,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+app.UseRateLimiter();
 app.UseAuthorization();
 
 app.MapControllers();

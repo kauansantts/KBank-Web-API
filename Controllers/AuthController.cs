@@ -164,7 +164,7 @@ namespace KBank_Web_API.Controllers
             });
         }
 
-        [Authorize(Policy = "SuperAdmOnly")]
+        //[Authorize(Policy = "SuperAdmOnly")]
         [HttpGet("/Todos-Usuarios")]
         public async Task<IActionResult> GetUsuarios()
         {
