@@ -1,4 +1,5 @@
-﻿using KBank_Web_API.DTOs.AuthDtos;
+﻿using Asp.Versioning;
+using KBank_Web_API.DTOs.AuthDtos;
 using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
 using KBank_Web_API.Service;
@@ -13,8 +14,9 @@ using System.Security.Claims;
 
 namespace KBank_Web_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion(1.0)]
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
@@ -31,7 +33,7 @@ namespace KBank_Web_API.Controllers
         }
 
         
-        [HttpPost("/Login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> login([FromBody] LoginDTO request)
         {
             var user = await _userManager.FindByNameAsync(request.NomeUsuario);
@@ -74,7 +76,7 @@ namespace KBank_Web_API.Controllers
             return Unauthorized();
         }
 
-        [HttpPost("/Cadastro")]
+        [HttpPost("Cadastro")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO request)
         {
             var userExistente = await _userManager.FindByNameAsync(request.NomeUsuario);
@@ -107,7 +109,7 @@ namespace KBank_Web_API.Controllers
             });
         }
 
-        [HttpPost("/Refresh-Token")]
+        [HttpPost("Refresh-Token")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenDTO request)
         {
             if (request is null) return BadRequest("Tokens invalidos!");
@@ -148,7 +150,7 @@ namespace KBank_Web_API.Controllers
             });
         }
 
-        [HttpGet("/Dados-Usuário")]
+        [HttpGet("Dados-Usuário")]
         public async Task<IActionResult> GetDadosUser()
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

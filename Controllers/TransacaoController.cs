@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using KBank_Web_API.DTOs.Request;
 using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
@@ -15,8 +16,9 @@ namespace KBank_Web_API.Controllers
 {
 
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion(1.0)]
     public class TransacaoController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -51,7 +53,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Transações")]
+        [HttpGet("Transações")]
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetTransacoes()
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -66,7 +68,7 @@ namespace KBank_Web_API.Controllers
         }
 
 
-        [HttpGet("/Por-data")]//passagem de parametros = 2026-01-20
+        [HttpGet("Por-data")]//passagem de parametros = 2026-01-20
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorData([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -88,7 +90,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Por-Maior-Menor")]//testar
+        [HttpGet("Por-Maior-Menor")]//testar
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorOrdem([FromQuery] double valorInicial, [FromQuery] double valorFinal)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -110,7 +112,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Por-ParcelaId/{id}")]//id da parcela
+        [HttpGet("Por-ParcelaId/{id}")]//id da parcela
         public async Task<ActionResult<TransacaoResponseDTO>> GetPorParcelaId(int id)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -133,7 +135,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Por-Tipo")]
+        [HttpGet("Por-Tipo")]
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorTipoEnum([FromQuery] TipoEnum tipo)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -156,7 +158,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Por-Categoria")]
+        [HttpGet("Por-Categoria")]
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorCategoriaEnum([FromQuery] CategoriaEnum categoria)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -179,7 +181,7 @@ namespace KBank_Web_API.Controllers
             }
         }
 
-        [HttpGet("/Por-Identificador")]
+        [HttpGet("Por-Identificador")]
         public async Task<ActionResult<IEnumerable<TransacaoResponseDTO>>> GetPorIdentificadorEnum([FromQuery] IdentificadorEnum identificador)
         {
             var usuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

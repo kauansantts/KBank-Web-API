@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using KBank_Web_API.DTOs.Request;
 using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
@@ -14,8 +15,9 @@ using System.Security.Claims;
 namespace KBank_Web_API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion(1.0)]
     public class CompraParceladaController : ControllerBase
     {
         private readonly ICompraParceladaRepository _compra;

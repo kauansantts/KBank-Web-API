@@ -1,5 +1,5 @@
+using Asp.Versioning;
 using KBank_Web_API;
-using KBank_Web_API.Configs;
 using KBank_Web_API.DTOs;
 using KBank_Web_API.Infra;
 using KBank_Web_API.Models;
@@ -112,7 +112,6 @@ builder.Services.AddCors(options =>
 
 var ratelimitoptions = new RateLimitOptions();
 builder.Configuration.GetSection("RateLimit").Bind(ratelimitoptions);
-
 builder.Services.AddRateLimiter(ratelimitOptions =>
 {
     ratelimitOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -129,6 +128,24 @@ builder.Services.AddRateLimiter(ratelimitOptions =>
                                                      Window = TimeSpan.FromSeconds(ratelimitoptions.WindowSeconds)
                                                  }));
 });
+
+
+//Versionamento apenas versão 1.0 ate então
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader());
+
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+
+
 
 var app = builder.Build();
 

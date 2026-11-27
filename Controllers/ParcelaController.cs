@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using KBank_Web_API.DTOs.Response;
 using KBank_Web_API.Models;
 using KBank_Web_API.Repositories;
@@ -13,8 +14,9 @@ namespace KBank_Web_API.Controllers
 {
 
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion(1.0)]
     public class ParcelaController : ControllerBase
     {
         private readonly IMapper _mapper;
